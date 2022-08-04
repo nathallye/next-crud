@@ -1,34 +1,74 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Projeto CRUD com Next.js
 
-## Getting Started
+## Criando o projeto CRUD com Next.js
 
-First, run the development server:
+- Dentro da pasta do projeto, vamos rodar o comando(mais recomendado atualmente usar o npx):
 
-```bash
-npm run dev
-# or
-yarn dev
+```
+npx create-next-app next-crud
+                    [nome-aplicação]
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**npx:** Comando que vai se encarregar de baixar uma dependência que vamos usar apenas de forma temporária. Ele baixa essa dependência, executa o que tem que ser executado e depois exclui ela. Desse modo, não instalamos as dependências de forma global, evitando ocupar espaço na máquina. 
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+**create-next-app:** Dependência para criar um projeto.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+- Ao finalizar a criação ele informa no terminal os próximos passos.
+Primeiro, entrar na pasta da aplicação:
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+```
+cd next-crud
+   [nome-pasta-aplicação]
+```
 
-## Learn More
+- Segundo, rodar o comando para iniciar o projeto:
 
-To learn more about Next.js, take a look at the following resources:
+```
+yarn dev ou npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Configurações do projeto
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Dentro do vscode, podemos notar que foram criados os seguintes diretórios no projeto:
 
-## Deploy on Vercel
+```
+.next
+node_modules
+pages
+public
+styles
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Vamos **criar uma pasta src na raiz do projeto**.
+E **mover as pastas pages e styles para dentro de src**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Agora, vamos parar a aplicação
+
+```
+ctrl + c
+```
+
+- E rodar novamente, para que a página seja recarregada:
+
+```
+yarn dev ou npm run dev
+```
+
+- Outra coisa, que podemos nos atentar é que dentro da pasta _pages_ temos dois arquivos:
+
+```
+_app.js
+index.js
+```
+
+- Eles são arquivos javascript só que dentro deles temos códigos _jsx(javascript com react)_, desse modo, podemos mudar a extensão desses arquivos para que o vscode consiga lidar melhor com eles.
+
+## Estrutura de pastas
+
+- No momento vamos ressaltar 3 pastas que o next.js cria no nosso projeto:
+
+```
+public
+pages
+styles
+```# next-crud
