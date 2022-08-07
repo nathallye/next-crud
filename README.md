@@ -1075,9 +1075,9 @@ export default function Table(props: TableProps) {
   function renderHeader() {
     return (
       <tr>
-        <th className="text-left p-2">Código</th>
-        <th className="text-left p-2">Nome</th>
-        <th className="text-left p-2">Idade</th>
+        <th className="text-left p-4">Código</th>
+        <th className="text-left p-4">Nome</th>
+        <th className="text-left p-4">Idade</th>
       </tr>
     )
   }
@@ -1110,7 +1110,7 @@ export default function Table(props: TableProps) {
 }
 ```
 
-- E em todos os elementos `td` do corpo/`body` da tabela(onde ficam os dados dos clientes) vamos aplicar as classes de estilo seguintes; `text-left` para alinhar os textos a esquerda da tela e um padding/`p` de `2` px em todas as direções:
+- E em todos os elementos `td` do corpo/`body` da tabela(onde ficam os dados dos clientes) vamos aplicar as classes de estilo seguintes; `text-left` para alinhar os textos a esquerda da tela e um padding/`p` de `4` px em todas as direções:
 
 ``` TSX
 import Client from "../core/Client";
@@ -1124,9 +1124,9 @@ export default function Table(props: TableProps) {
   function renderHeader() {
     return (
       <tr>
-        <th className="text-left p-2">Código</th>
-        <th className="text-left p-2">Nome</th>
-        <th className="text-left p-2">Idade</th>
+        <th className="text-left p-4">Código</th>
+        <th className="text-left p-4">Nome</th>
+        <th className="text-left p-4">Idade</th>
       </tr>
     )
   }
@@ -1135,9 +1135,9 @@ export default function Table(props: TableProps) {
     return props.clients?.map((client, i) => {
       return (
         <tr key={client.id}>
-          <td className="text-left p-2">{client.id}</td>
-          <td className="text-left p-2">{client.name}</td>
-          <td className="text-left p-2">{client.age}</td>
+          <td className="text-left p-4">{client.id}</td>
+          <td className="text-left p-4">{client.name}</td>
+          <td className="text-left p-4">{client.age}</td>
         </tr>
       )
     })
@@ -1174,9 +1174,9 @@ export default function Table(props: TableProps) {
   function renderHeader() {
     return (
       <tr>
-        <th className="text-left p-2">Código</th>
-        <th className="text-left p-2">Nome</th>
-        <th className="text-left p-2">Idade</th>
+        <th className="text-left p-4">Código</th>
+        <th className="text-left p-4">Nome</th>
+        <th className="text-left p-4">Idade</th>
       </tr>
     )
   }
@@ -1188,9 +1188,9 @@ export default function Table(props: TableProps) {
           className={`
             ${i % 2 === 0 ? "bg-purple-200" : "bg-purple-100"}
           `}>
-          <td className="text-left p-2">{client.id}</td>
-          <td className="text-left p-2">{client.name}</td>
-          <td className="text-left p-2">{client.age}</td>
+          <td className="text-left p-4">{client.id}</td>
+          <td className="text-left p-4">{client.name}</td>
+          <td className="text-left p-4">{client.age}</td>
         </tr>
       )
     })
@@ -1213,3 +1213,931 @@ export default function Table(props: TableProps) {
 ```
 
 ## Componente Tabela/Table #03
+
+- Agora, iremos definir a coluna das ações(editar e excluir). 
+Primeiramente dentro de `src/components`, vamos criar um arquivo chamados Icones/`Icons.tsx` e nele iremos exportar/`export` uma constante/`const` chamada ícone edição/`EditIcon`:
+
+``` JSX
+export const EditIcon = (
+  
+)
+```
+
+Em seguida, vamos pegar os ícones do `Heroicons`(https://heroicons.com/) e vamos pesquisar o ícone de Editar/`Edit` e copiar o `jsx` dele e colar dentro da constante `EditIcon` para ser retornado esse trecho JSX:
+
+``` TSX
+export const EditIcon = (
+  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+  </svg>
+)
+```
+
+- E o mesmo iremos fazer para o icone de lixo/`TrashIcon`:
+
+``` TSX
+export const EditIcon = (
+  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+  </svg>
+)
+
+export const TrashIcon = (
+  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+  </svg>
+)
+```
+
+- Voltando no componente `Table` na parte do cabeçalho/`header` iremos criar mais um `th`:
+
+``` TSX
+import Client from "../core/Client";
+
+interface TableProps {
+  clients: Client[],
+}
+
+export default function Table(props: TableProps) {
+
+  function renderHeader() {
+    return (
+      <tr>
+        <th className="text-left p-4">Código</th>
+        <th className="text-left p-4">Nome</th>
+        <th className="text-left p-4">Idade</th>
+        <th className="p-4">Ações</th>
+      </tr>
+    )
+  }
+
+  function renderData() {
+    return props.clients?.map((client, i) => {
+      return (
+        <tr key={client.id}
+          className={`
+            ${i % 2 === 0 ? "bg-purple-200" : "bg-purple-100"}
+          `}>
+          <td className="text-left p-4">{client.id}</td>
+          <td className="text-left p-4">{client.name}</td>
+          <td className="text-left p-4">{client.age}</td>
+        </tr>
+      )
+    })
+  }
+
+  return (
+    <table className="w-full rounded-xl overflow-hidden">
+      <thead className={`
+        text-gray-100
+        bg-gradient-to-r from-purple-500 to-purple-800
+      `}>
+       {renderHeader()}
+      </thead>
+      <tbody>
+        {renderData()}
+      </tbody>
+    </table>
+  )
+}
+```
+
+- E vamos criar mais uma função que será responsável por renderizar as ações/`renderActions` e nela iremos retornar/`return` especificamente a parte dos botões, então teremos um `td`(coluna da tabela) que é nele que iremos colocar os botões. 
+E dentro da função que renderiza os dados/`renderData` da tabela vamos chamar essa função `renderActions`:
+
+``` TSX
+import Client from "../core/Client";
+
+interface TableProps {
+  clients: Client[],
+}
+
+export default function Table(props: TableProps) {
+
+  function renderHeader() {
+    return (
+      <tr>
+        <th className="text-left p-4">Código</th>
+        <th className="text-left p-4">Nome</th>
+        <th className="text-left p-4">Idade</th>
+        <th className="p-4">Ações</th>
+      </tr>
+    )
+  }
+
+  function renderData() {
+    return props.clients?.map((client, i) => {
+      return (
+        <tr key={client.id}
+          className={`
+            ${i % 2 === 0 ? "bg-purple-200" : "bg-purple-100"}
+          `}>
+          <td className="text-left p-4">{client.id}</td>
+          <td className="text-left p-4">{client.name}</td>
+          <td className="text-left p-4">{client.age}</td>
+          {renderActions()}
+        </tr>
+      )
+    })
+  }
+
+  function renderActions() {
+    return (
+      <td>
+
+      </td>
+    )
+  }
+
+  return (
+    <table className="w-full rounded-xl overflow-hidden">
+      <thead className={`
+        text-gray-100
+        bg-gradient-to-r from-purple-500 to-purple-800
+      `}>
+       {renderHeader()}
+      </thead>
+      <tbody>
+        {renderData()}
+      </tbody>
+    </table>
+  )
+}
+```
+
+- E para renderizar as ações, como estamos trabalhando com uma lista de clientes/clients, na função `renderActions` vamos esperar receber o `client` que é do tipo `Client`(class que criamos), porque vamos precisar selecionar um cliente específico. Então para cada `client` que percorrermos com o `map`, vamos renderizar as ações daquele `client` específicamente:
+
+``` TSX
+import Client from "../core/Client";
+
+interface TableProps {
+  clients: Client[],
+}
+
+export default function Table(props: TableProps) {
+
+  function renderHeader() {
+    return (
+      <tr>
+        <th className="text-left p-4">Código</th>
+        <th className="text-left p-4">Nome</th>
+        <th className="text-left p-4">Idade</th>
+        <th className="p-4">Ações</th>
+      </tr>
+    )
+  }
+
+  function renderData() {
+    return props.clients?.map((client, i) => {
+      return (
+        <tr key={client.id}
+          className={`
+            ${i % 2 === 0 ? "bg-purple-200" : "bg-purple-100"}
+          `}>
+          <td className="text-left p-4">{client.id}</td>
+          <td className="text-left p-4">{client.name}</td>
+          <td className="text-left p-4">{client.age}</td>
+          {renderActions(client)}
+        </tr>
+      )
+    })
+  }
+
+  function renderActions(client: Client) {
+    return (
+      <td>
+
+      </td>
+    )
+  }
+
+  return (
+    <table className="w-full rounded-xl overflow-hidden">
+      <thead className={`
+        text-gray-100
+        bg-gradient-to-r from-purple-500 to-purple-800
+      `}>
+       {renderHeader()}
+      </thead>
+      <tbody>
+        {renderData()}
+      </tbody>
+    </table>
+  )
+}
+```
+
+- Agora, dentro do `td` podemos criar os botões/`button` e nele vamos usar os ícones que definimos dentro do arquivo `Icon`:
+
+``` TSX
+import Client from "../core/Client";
+import { EditIcon, TrashIcon} from "./Icon";
+
+interface TableProps {
+  clients: Client[],
+}
+
+export default function Table(props: TableProps) {
+
+  function renderHeader() {
+    return (
+      <tr>
+        <th className="text-left p-4">Código</th>
+        <th className="text-left p-4">Nome</th>
+        <th className="text-left p-4">Idade</th>
+        <th className="p-4">Ações</th>
+      </tr>
+    )
+  }
+
+  function renderData() {
+    return props.clients?.map((client, i) => {
+      return (
+        <tr key={client.id}
+          className={`
+            ${i % 2 === 0 ? "bg-purple-200" : "bg-purple-100"}
+          `}>
+          <td className="text-left p-4">{client.id}</td>
+          <td className="text-left p-4">{client.name}</td>
+          <td className="text-left p-4">{client.age}</td>
+          {renderActions(client)}
+        </tr>
+      )
+    })
+  }
+
+  function renderActions(client: Client) {
+    return (
+      <td>
+        <button>{EditIcon}</button>
+        <button>{TrashIcon}</button>
+      </td>
+    )
+  }
+
+  return (
+    <table className="w-full rounded-xl overflow-hidden">
+      <thead className={`
+        text-gray-100
+        bg-gradient-to-r from-purple-500 to-purple-800
+      `}>
+       {renderHeader()}
+      </thead>
+      <tbody>
+        {renderData()}
+      </tbody>
+    </table>
+  )
+}
+```
+
+- Em seguida, vamos aplicar classes de estilos ao botões:
+
+``` TSX
+import Client from "../core/Client";
+import { EditIcon, TrashIcon} from "./Icon";
+
+interface TableProps {
+  clients: Client[],
+}
+
+export default function Table(props: TableProps) {
+
+  function renderHeader() {
+    return (
+      <tr>
+        <th className="text-left p-4">Código</th>
+        <th className="text-left p-4">Nome</th>
+        <th className="text-left p-4">Idade</th>
+        <th className="p-2">Ações</th>
+      </tr>
+    )
+  }
+
+  function renderData() {
+    return props.clients?.map((client, i) => {
+      return (
+        <tr key={client.id}
+          className={`
+            ${i % 2 === 0 ? "bg-purple-200" : "bg-purple-100"}
+          `}>
+          <td className="text-left p-4">{client.id}</td>
+          <td className="text-left p-4">{client.name}</td>
+          <td className="text-left p-4">{client.age}</td>
+          {renderActions(client)}
+        </tr>
+      )
+    })
+  }
+
+  function renderActions(client: Client) {
+    return (
+      <td className="flex justify-center items-center"> {/*Para os botões ficarem um ao lado do outro/display flex alinha os flex items em linha/row*/}
+        <button className={`
+          flex justify-center items-center
+          text-green-600 rounded-full p-2 m-1
+          hover:bg-purple-50
+        `}>
+          {EditIcon}
+        </button>
+        <button className={`
+          flex justify-center items-center
+          text-red-500 rounded-full p-2 m-1
+          hover:bg-purple-50
+        `}>
+          {TrashIcon}
+        </button>
+      </td>
+    )
+  }
+
+  return (
+    <table className="w-full rounded-xl overflow-hidden">
+      <thead className={`
+        text-gray-100
+        bg-gradient-to-r from-purple-500 to-purple-800
+      `}>
+       {renderHeader()}
+      </thead>
+      <tbody>
+        {renderData()}
+      </tbody>
+    </table>
+  )
+}
+```
+
+- Agora, vamos tratar o click dos botões, e pra isso iremos definir que o componente `Table` além de receber a lista de clientes/`clients` irá receber duas funções, uma função será chamada quando o cliente for selecionado para editar seus dados/`selectedClient` e a outra para quando for excluído/`excludedClient`. E a passagem dessas duas funções serão opcionais `?` e ambas irão devolver um cliente/`client` do tipo `Client`(classe que criamos) e não retorna nada `void`:
+
+``` TSX
+import Client from "../core/Client";
+import { EditIcon, TrashIcon} from "./Icon";
+
+interface TableProps {
+  clients: Client[],
+  selectedClient?: (client: Client) => void,
+  excludedClient?: (client: Client) => void
+}
+
+export default function Table(props: TableProps) {
+
+  function renderHeader() {
+    return (
+      <tr>
+        <th className="text-left p-4">Código</th>
+        <th className="text-left p-4">Nome</th>
+        <th className="text-left p-4">Idade</th>
+        <th className="p-2">Ações</th>
+      </tr>
+    )
+  }
+
+  function renderData() {
+    return props.clients?.map((client, i) => {
+      return (
+        <tr key={client.id}
+          className={`
+            ${i % 2 === 0 ? "bg-purple-200" : "bg-purple-100"}
+          `}>
+          <td className="text-left p-4">{client.id}</td>
+          <td className="text-left p-4">{client.name}</td>
+          <td className="text-left p-4">{client.age}</td>
+          {renderActions(client)}
+        </tr>
+      )
+    })
+  }
+
+  function renderActions(client: Client) {
+    return (
+      <td className="flex justify-center items-center"> 
+        <button className={`
+          flex justify-center items-center
+          text-green-600 rounded-full p-2 m-1
+          hover:bg-purple-50
+        `}>
+          {EditIcon}
+        </button>
+        <button className={`
+          flex justify-center items-center
+          text-red-500 rounded-full p-2 m-1
+          hover:bg-purple-50
+        `}>
+          {TrashIcon}
+        </button>
+      </td>
+    )
+  }
+
+  return (
+    <table className="w-full rounded-xl overflow-hidden">
+      <thead className={`
+        text-gray-100
+        bg-gradient-to-r from-purple-500 to-purple-800
+      `}>
+       {renderHeader()}
+      </thead>
+      <tbody>
+        {renderData()}
+      </tbody>
+    </table>
+  )
+}
+```
+
+- Em seguida, vamos aplicar renderização condicional para os botões. Se a função `selectedClient` tiver sido fornecida via props então(`?`) iremos renderizar o botão/`button` de editar, caso contrário(`:`) iremos retornar `false`:
+
+``` TSX
+import Client from "../core/Client";
+import { EditIcon, TrashIcon} from "./Icon";
+
+interface TableProps {
+  clients: Client[],
+  selectedClient?: (client: Client) => void,
+  excludedClient?: (client: Client) => void
+}
+
+export default function Table(props: TableProps) {
+
+  function renderHeader() {
+    return (
+      <tr>
+        <th className="text-left p-4">Código</th>
+        <th className="text-left p-4">Nome</th>
+        <th className="text-left p-4">Idade</th>
+        <th className="p-2">Ações</th>
+      </tr>
+    )
+  }
+
+  function renderData() {
+    return props.clients?.map((client, i) => {
+      return (
+        <tr key={client.id}
+          className={`
+            ${i % 2 === 0 ? "bg-purple-200" : "bg-purple-100"}
+          `}>
+          <td className="text-left p-4">{client.id}</td>
+          <td className="text-left p-4">{client.name}</td>
+          <td className="text-left p-4">{client.age}</td>
+          {renderActions(client)}
+        </tr>
+      )
+    })
+  }
+
+  function renderActions(client: Client) {
+    return (
+      <td className="flex justify-center items-center"> 
+        {props.selectedClient 
+        ? (<button className={`
+            flex justify-center items-center
+            text-green-600 rounded-full p-2 m-1
+            hover:bg-purple-50
+          `}>
+            {EditIcon}
+          </button>) 
+        : false}
+        <button className={`
+          flex justify-center items-center
+          text-red-500 rounded-full p-2 m-1
+          hover:bg-purple-50
+        `}>
+          {TrashIcon}
+        </button>
+      </td>
+    )
+  }
+
+  return (
+    <table className="w-full rounded-xl overflow-hidden">
+      <thead className={`
+        text-gray-100
+        bg-gradient-to-r from-purple-500 to-purple-800
+      `}>
+       {renderHeader()}
+      </thead>
+      <tbody>
+        {renderData()}
+      </tbody>
+    </table>
+  )
+}
+```
+
+- E o mesmo iremos fazer para o botão de excluir:
+
+``` TSX
+import Client from "../core/Client";
+import { EditIcon, TrashIcon} from "./Icon";
+
+interface TableProps {
+  clients: Client[],
+  selectedClient?: (client: Client) => void,
+  excludedClient?: (client: Client) => void
+}
+
+export default function Table(props: TableProps) {
+
+  function renderHeader() {
+    return (
+      <tr>
+        <th className="text-left p-4">Código</th>
+        <th className="text-left p-4">Nome</th>
+        <th className="text-left p-4">Idade</th>
+        <th className="p-2">Ações</th>
+      </tr>
+    )
+  }
+
+  function renderData() {
+    return props.clients?.map((client, i) => {
+      return (
+        <tr key={client.id}
+          className={`
+            ${i % 2 === 0 ? "bg-purple-200" : "bg-purple-100"}
+          `}>
+          <td className="text-left p-4">{client.id}</td>
+          <td className="text-left p-4">{client.name}</td>
+          <td className="text-left p-4">{client.age}</td>
+          {renderActions(client)}
+        </tr>
+      )
+    })
+  }
+
+  function renderActions(client: Client) {
+    return (
+      <td className="flex justify-center items-center"> 
+        {props.selectedClient 
+        ? (<button className={`
+            flex justify-center items-center
+            text-green-600 rounded-full p-2 m-1
+            hover:bg-purple-50
+          `}>
+            {EditIcon}
+          </button>) 
+        : false}
+        {props.excludedClient
+        ? (<button className={`
+            flex justify-center items-center
+            text-red-500 rounded-full p-2 m-1
+            hover:bg-purple-50
+          `}>
+            {TrashIcon}
+           </button>)
+        : false}
+      </td>
+    )
+  }
+
+  return (
+    <table className="w-full rounded-xl overflow-hidden">
+      <thead className={`
+        text-gray-100
+        bg-gradient-to-r from-purple-500 to-purple-800
+      `}>
+       {renderHeader()}
+      </thead>
+      <tbody>
+        {renderData()}
+      </tbody>
+    </table>
+  )
+}
+```
+
+- Agora, como não passamos nenhuma função via props para o componente `Table`, nenhuma ação está sendo exibida em tela e podemos incluive criar uma const chamada exibir ações/`showActions` e ela vai receber a verificação se `props.selectedClient` ou/`||` se `props.excludedClient` foi passado, e isso vai retornar um valor booleano para a constante:
+
+``` TSX
+import Client from "../core/Client";
+import { EditIcon, TrashIcon} from "./Icon";
+
+interface TableProps {
+  clients: Client[],
+  selectedClient?: (client: Client) => void,
+  excludedClient?: (client: Client) => void
+}
+
+export default function Table(props: TableProps) {
+
+  const showActions = props.selectedClient || props.excludedClient;
+
+  function renderHeader() {
+    return (
+      <tr>
+        <th className="text-left p-4">Código</th>
+        <th className="text-left p-4">Nome</th>
+        <th className="text-left p-4">Idade</th>
+        <th className="p-2">Ações</th>
+      </tr>
+    )
+  }
+
+  function renderData() {
+    return props.clients?.map((client, i) => {
+      return (
+        <tr key={client.id}
+          className={`
+            ${i % 2 === 0 ? "bg-purple-200" : "bg-purple-100"}
+          `}>
+          <td className="text-left p-4">{client.id}</td>
+          <td className="text-left p-4">{client.name}</td>
+          <td className="text-left p-4">{client.age}</td>
+          {renderActions(client)}
+        </tr>
+      )
+    })
+  }
+
+  function renderActions(client: Client) {
+    return (
+      <td className="flex justify-center items-center"> {/*Para os botões ficarem um ao lado do outros/display flex alinha os flex items em linha/row*/}
+        {props.selectedClient 
+        ? (<button className={`
+            flex justify-center items-center
+            text-green-600 rounded-full p-2 m-1
+            hover:bg-purple-50
+          `}>
+            {EditIcon}
+          </button>) 
+        : false}
+        {props.excludedClient
+        ? (<button className={`
+            flex justify-center items-center
+            text-red-500 rounded-full p-2 m-1
+            hover:bg-purple-50
+          `}>
+            {TrashIcon}
+           </button>)
+        : false}
+      </td>
+    )
+  }
+
+  return (
+    <table className="w-full rounded-xl overflow-hidden">
+      <thead className={`
+        text-gray-100
+        bg-gradient-to-r from-purple-500 to-purple-800
+      `}>
+       {renderHeader()}
+      </thead>
+      <tbody>
+        {renderData()}
+      </tbody>
+    </table>
+  )
+}
+```
+
+- E iremos usar o valor retornado nessa constante `showActions` para renderizar de forma condicional o cabeçalho de Ações e os icons:
+
+``` TSX
+import Client from "../core/Client";
+import { EditIcon, TrashIcon} from "./Icon";
+
+interface TableProps {
+  clients: Client[],
+  selectedClient?: (client: Client) => void,
+  excludedClient?: (client: Client) => void
+}
+
+export default function Table(props: TableProps) {
+
+  const showActions = props.selectedClient || props.excludedClient;
+
+  function renderHeader() {
+    return (
+      <tr>
+        <th className="text-left p-4">Código</th>
+        <th className="text-left p-4">Nome</th>
+        <th className="text-left p-4">Idade</th>
+        {showActions ? (<th className="p-2">Ações</th>) : false}
+      </tr>
+    )
+  }
+
+  function renderData() {
+    return props.clients?.map((client, i) => {
+      return (
+        <tr key={client.id}
+          className={`
+            ${i % 2 === 0 ? "bg-purple-200" : "bg-purple-100"}
+          `}>
+          <td className="text-left p-4">{client.id}</td>
+          <td className="text-left p-4">{client.name}</td>
+          <td className="text-left p-4">{client.age}</td>
+          {showActions ? (renderActions(client)) : false}
+        </tr>
+      )
+    })
+  }
+
+  function renderActions(client: Client) {
+    return (
+      <td className="flex justify-center items-center">
+        {props.selectedClient 
+        ? (<button className={`
+            flex justify-center items-center
+            text-green-600 rounded-full p-2 m-1
+            hover:bg-purple-50
+          `}>
+            {EditIcon}
+          </button>) 
+        : false}
+        {props.excludedClient
+        ? (<button className={`
+            flex justify-center items-center
+            text-red-500 rounded-full p-2 m-1
+            hover:bg-purple-50
+          `}>
+            {TrashIcon}
+           </button>)
+        : false}
+      </td>
+    )
+  }
+
+  return (
+    <table className="w-full rounded-xl overflow-hidden">
+      <thead className={`
+        text-gray-100
+        bg-gradient-to-r from-purple-500 to-purple-800
+      `}>
+       {renderHeader()}
+      </thead>
+      <tbody>
+        {renderData()}
+      </tbody>
+    </table>
+  )
+}
+```
+
+- E vamos criar a uma função chamada `selectedClient` que irá receber como parâmetro um `client` do tipo `Client` e passar essa função dentro do atributo `selectedClient` para o componente `Tabela` em `index.tsx`. Dessa forma, já será exibida em tela o botão de editar:
+
+``` TSX
+import Layout from "../components/Layout";
+import Table from "../components/Table";
+
+import Client from "../core/Client";
+
+export default function Home() {
+
+  const clients = [
+    new Client("Ana", 34, "1"),
+    new Client("Joana", 19, "2"),
+    new Client("Beatriz", 24, "3"),
+    new Client("João", 23, "4"),
+    new Client("Daniel", 30, "5"),
+    new Client("Rafael", 29, "6")
+  ];
+
+  function selectedClient(client: Client) {
+
+  }
+
+  return (
+    <div className={`
+      flex h-screen justify-center items-center
+      bg-gradient-to-r from-purple-500 to-blue-600
+      text-white
+    `}>
+      <Layout title="Cadastro Simples">
+        <Table clients={clients} selectedClient={selectedClient} />
+      </Layout>
+    </div>
+  )
+}
+```
+
+- O mesmo iremos fazer para o atributo `excludedClient`:
+
+``` TSX
+import Layout from "../components/Layout";
+import Table from "../components/Table";
+
+import Client from "../core/Client";
+
+export default function Home() {
+
+  const clients = [
+    new Client("Ana", 34, "1"),
+    new Client("Joana", 19, "2"),
+    new Client("Beatriz", 24, "3"),
+    new Client("João", 23, "4"),
+    new Client("Daniel", 30, "5"),
+    new Client("Rafael", 29, "6")
+  ];
+
+  function selectedClient(client: Client) {
+    
+  }
+
+  function excludedClient(client: Client) {
+    
+  }
+
+  return (
+    <div className={`
+      flex h-screen justify-center items-center
+      bg-gradient-to-r from-purple-500 to-blue-600
+      text-white
+    `}>
+      <Layout title="Cadastro Simples">
+        <Table 
+          clients={clients} 
+          selectedClient={selectedClient} 
+          excludedClient={excludedClient} 
+        />
+      </Layout>
+    </div>
+  )
+}
+```
+
+- Mas quando clicamos nos botões ainda não acontece nada, então precisamos definir o evento `onClick` dentro dos botões/`button`:
+
+``` TSX
+import Client from "../core/Client";
+import { EditIcon, TrashIcon} from "./Icon";
+
+interface TableProps {
+  clients: Client[],
+  selectedClient?: (client: Client) => void,
+  excludedClient?: (client: Client) => void
+}
+
+export default function Table(props: TableProps) {
+
+  const showActions = props.selectedClient || props.excludedClient;
+
+  function renderHeader() {
+    return (
+      <tr>
+        <th className="text-left p-4">Código</th>
+        <th className="text-left p-4">Nome</th>
+        <th className="text-left p-4">Idade</th>
+        {showActions ? (<th className="p-2">Ações</th>) : false}
+      </tr>
+    )
+  }
+
+  function renderData() {
+    return props.clients?.map((client, i) => {
+      return (
+        <tr key={client.id}
+          className={`
+            ${i % 2 === 0 ? "bg-purple-200" : "bg-purple-100"}
+          `}>
+          <td className="text-left p-4">{client.id}</td>
+          <td className="text-left p-4">{client.name}</td>
+          <td className="text-left p-4">{client.age}</td>
+          {showActions ? (renderActions(client)) : false}
+        </tr>
+      )
+    })
+  }
+
+  function renderActions(client: Client) {
+    return (
+      <td className="flex justify-center items-center"> 
+        {props.selectedClient 
+        ? (<button onClick={() => props.selectedClient?.(client)} {/*Quando for capturado o click no botão a função recebida via props será chamada, mas como é opcional iremos usar o optional chane(?) e se a função tiver sido fornecida iremos chamá-la passando o client*/}
+            className={`
+              flex justify-center items-center
+              text-green-600 rounded-full p-2 m-1
+              hover:bg-purple-50
+            `}>
+            {EditIcon}
+          </button>) 
+        : false}
+        {props.excludedClient
+        ? (<button onClick={() => props.excludedClient?.(client)} {/*Quando for capturado o click no botão a função recebida via props será chamada, mas como é opcional iremos usar o optional chane(?) e se a função tiver sido fornecida iremos chamá-la passando o client*/}
+            className={`
+              flex justify-center items-center
+              text-red-500 rounded-full p-2 m-1
+              hover:bg-purple-50
+            `}>
+            {TrashIcon}
+           </button>)
+        : false}
+      </td>
+    )
+  }
+
+  return (
+    <table className="w-full rounded-xl overflow-hidden">
+      <thead className={`
+        text-gray-100
+        bg-gradient-to-r from-purple-500 to-purple-800
+      `}>
+       {renderHeader()}
+      </thead>
+      <tbody>
+        {renderData()}
+      </tbody>
+    </table>
+  )
+```
