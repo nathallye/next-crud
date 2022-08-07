@@ -591,7 +591,7 @@ export default function Table(props) {
 Vamos esperar receber um array de clientes/`clients` através da instância que criamos `Client` e vamos passar essa `interface` para `props`(ou seja, props vai ser do tipo TableProps):
 
 ``` TSX
-import Client from "../core/Client"
+import Client from "../core/Client";
 
 interface TableProps {
   clients: Client[]
@@ -609,7 +609,7 @@ export default function Table(props: TableProps) {
 - Outra coisa que podemos fazer é quebrar a renderização em multiplas funções, por exemplo, podemos simplesmente criar a tabela e colocar um `tr` que vai ser um `table row`/linha tabela e dentro dela vamos inserir os `th` que serão o cabeçalho da tabela(Código, Nome, Idade):
 
 ``` TSX
-import Client from "../core/Client"
+import Client from "../core/Client";
 
 interface TableProps {
   clients: Client[],
@@ -686,7 +686,7 @@ export default function Home() {
 - Agora voltando a olhar para o componente `Table`, podemos eventualmente quebrar a nossa tabela em funções para deixarmos a renderização mais organizada. Por exemplo, podemos criar uma função chamada renderizar cabeçalho/`renderHeader` e nela vamos retornar/`return` o trecho do cabeçalho da nossa tabela e no elemento `table` vamos chamar essa função:
 
 ``` TSX
-import Client from "../core/Client"
+import Client from "../core/Client";
 
 interface TableProps {
   clients: Client[],
@@ -715,7 +715,7 @@ export default function Table(props: TableProps) {
 - Outra parte que podemos trabalhar é na parte de renderizar os dados e para isso, vamos criar uma função chamada renderizar dados/`renderData` e dentro dela vamos retornar/`return` a lista de clientes/`clients` que iremos receber via `props`. E como é um array vamos fazer um `map` para percorrer cada cliente/`client` e seu indice/`i`:
 
 ``` TSX
-import Client from "../core/Client"
+import Client from "../core/Client";
 
 interface TableProps {
   clients: Client[],
@@ -750,7 +750,7 @@ export default function Table(props: TableProps) {
 - Lembrando se o array estiver vazio e formos usar o `map` isso vai ocasionar um erro, então para evitarmos isso vamos usar o `?` para verificar se `clients` é vazio/`nul`, ou seja, o `map` só vai ser executado se `clients` estiver preenchido:
 
 ``` TSX
-import Client from "../core/Client"
+import Client from "../core/Client";
 
 interface TableProps {
   clients: Client[],
@@ -785,7 +785,7 @@ export default function Table(props: TableProps) {
 - E na função callback desse `map` vamos retornar/`return` para cada cliente/`client` uma nova linha na tabela/`tr` e dentro dela colunas/`td` para cada informação do cliente/`client` em questão. E já que estamos trabalhando com uma lista de elementos JSX vamos precisar definir uma chave/`key` no elemento conteiner que nesse caso é o `tr`:
 
 ``` TSX
-import Client from "../core/Client"
+import Client from "../core/Client";
 
 interface TableProps {
   clients: Client[],
@@ -826,7 +826,7 @@ export default function Table(props: TableProps) {
 - E uma vez feito isso, dentro do elemento `table` podemos chamar a função `renderData` para renderizar os dados dos clientes/`clients` na tabela:
 
 ``` TSX
-import Client from "../core/Client"
+import Client from "../core/Client";
 
 interface TableProps {
   clients: Client[],
@@ -868,7 +868,7 @@ export default function Table(props: TableProps) {
 - Para melhor organização de sintaxe, vamos colocar/chamar a função que renderiza o cabeçalho/`renderHeader` dentro do elemento `thead` e chamar a função que renderiza os dados dentro do elemento `tbody`:
 
 ``` TSX
-import Client from "../core/Client"
+import Client from "../core/Client";
 
 interface TableProps {
   clients: Client[],
@@ -910,3 +910,306 @@ export default function Table(props: TableProps) {
   )
 }
 ```
+
+## Componente Tabela/Table #02
+
+- Agora vamos começar a trabalhar com propriedades de estilo do `tailwind` dentro do componente `Table`. 
+Primeiramente, no elemento `tread` dentro da propriedade `className`(usando chaves{} e template string para usar várias linhas) vamos aplicar as seguintes propriedades de estilo: background gradiente para a direita/`bg-gradient-to-r` iniciando em um tom de roxo mais claro/`from-purple-500` indo para um tom de roxo mais escuro/`to-purple-800`:
+
+``` TSX
+import Client from "../core/Client";
+
+interface TableProps {
+  clients: Client[],
+}
+
+export default function Table(props: TableProps) {
+
+  function renderHeader() {
+    return (
+      <tr>
+        <th>Código</th>
+        <th>Nome</th>
+        <th>Idade</th>
+      </tr>
+    )
+  }
+
+  function renderData() {
+    return props.clients?.map((client, i) => {
+      return (
+        <tr key={client.id}>
+          <td>{client.id}</td>
+          <td>{client.name}</td>
+          <td>{client.age}</td>
+        </tr>
+      )
+    })
+  }
+
+  return (
+    <table>
+      <thead className={`
+        bg-gradient-to-r from-purple-500 to-purple-800
+      `}>
+       {renderHeader()}
+      </thead>
+      <tbody>
+        {renderData()}
+      </tbody>
+    </table>
+  )
+}
+```
+
+- Além disso, vamos mudar a cor do texto do cabeçalho/`thead` para um tom de cinza bem claro/`text-gray-100`:
+
+``` TSX
+import Client from "../core/Client";
+
+interface TableProps {
+  clients: Client[],
+}
+
+export default function Table(props: TableProps) {
+
+  function renderHeader() {
+    return (
+      <tr>
+        <th>Código</th>
+        <th>Nome</th>
+        <th>Idade</th>
+      </tr>
+    )
+  }
+
+  function renderData() {
+    return props.clients?.map((client, i) => {
+      return (
+        <tr key={client.id}>
+          <td>{client.id}</td>
+          <td>{client.name}</td>
+          <td>{client.age}</td>
+        </tr>
+      )
+    })
+  }
+
+  return (
+    <table>
+      <thead className={`
+        text-gray-100
+        bg-gradient-to-r from-purple-500 to-purple-800
+      `}>
+       {renderHeader()}
+      </thead>
+      <tbody>
+        {renderData()}
+      </tbody>
+    </table>
+  )
+}
+```
+
+- E no elemento `table`, para que a largura da tabela ocupe a tela inteira vamos aplicar a propriedade `w-full`. 
+Além disso, vamos aplicar a propriedade `rounded-xl` para arredondar a borda da tabela, caso o arrendodamento na borda não seja aplicado, significa que o elemento é muito grande para o container e para contornar esse impasse temos que aplicar a propriedade `overflow-hidden` para recortar qualquer conteúdo dentro de um elemento que ultrapasse os limites desse elemento:
+
+``` TSX
+import Client from "../core/Client";
+
+interface TableProps {
+  clients: Client[],
+}
+
+export default function Table(props: TableProps) {
+
+  function renderHeader() {
+    return (
+      <tr>
+        <th>Código</th>
+        <th>Nome</th>
+        <th>Idade</th>
+      </tr>
+    )
+  }
+
+  function renderData() {
+    return props.clients?.map((client, i) => {
+      return (
+        <tr key={client.id}>
+          <td>{client.id}</td>
+          <td>{client.name}</td>
+          <td>{client.age}</td>
+        </tr>
+      )
+    })
+  }
+
+  return (
+    <table className="w-full rounded-xl overflow-hidden">
+      <thead className={`
+        text-gray-100
+        bg-gradient-to-r from-purple-500 to-purple-800
+      `}>
+       {renderHeader()}
+      </thead>
+      <tbody>
+        {renderData()}
+      </tbody>
+    </table>
+  )
+}
+```
+
+- Em seguida, em todos os elementos `th` do cabeçalho/`header` vamos aplicar as classes de estilo seguintes; `text-left` para alinhar os textos a esquerda da tela e um padding/`p` de `2` px em todas as direções:
+
+``` TSX
+import Client from "../core/Client";
+
+interface TableProps {
+  clients: Client[],
+}
+
+export default function Table(props: TableProps) {
+
+  function renderHeader() {
+    return (
+      <tr>
+        <th className="text-left p-2">Código</th>
+        <th className="text-left p-2">Nome</th>
+        <th className="text-left p-2">Idade</th>
+      </tr>
+    )
+  }
+
+  function renderData() {
+    return props.clients?.map((client, i) => {
+      return (
+        <tr key={client.id}>
+          <td>{client.id}</td>
+          <td>{client.name}</td>
+          <td>{client.age}</td>
+        </tr>
+      )
+    })
+  }
+
+  return (
+    <table className="w-full rounded-xl overflow-hidden">
+      <thead className={`
+        text-gray-100
+        bg-gradient-to-r from-purple-500 to-purple-800
+      `}>
+       {renderHeader()}
+      </thead>
+      <tbody>
+        {renderData()}
+      </tbody>
+    </table>
+  )
+}
+```
+
+- E em todos os elementos `td` do corpo/`body` da tabela(onde ficam os dados dos clientes) vamos aplicar as classes de estilo seguintes; `text-left` para alinhar os textos a esquerda da tela e um padding/`p` de `2` px em todas as direções:
+
+``` TSX
+import Client from "../core/Client";
+
+interface TableProps {
+  clients: Client[],
+}
+
+export default function Table(props: TableProps) {
+
+  function renderHeader() {
+    return (
+      <tr>
+        <th className="text-left p-2">Código</th>
+        <th className="text-left p-2">Nome</th>
+        <th className="text-left p-2">Idade</th>
+      </tr>
+    )
+  }
+
+  function renderData() {
+    return props.clients?.map((client, i) => {
+      return (
+        <tr key={client.id}>
+          <td className="text-left p-2">{client.id}</td>
+          <td className="text-left p-2">{client.name}</td>
+          <td className="text-left p-2">{client.age}</td>
+        </tr>
+      )
+    })
+  }
+
+  return (
+    <table className="w-full rounded-xl overflow-hidden">
+      <thead className={`
+        text-gray-100
+        bg-gradient-to-r from-purple-500 to-purple-800
+      `}>
+       {renderHeader()}
+      </thead>
+      <tbody>
+        {renderData()}
+      </tbody>
+    </table>
+  )
+}
+```
+
+- Agora, precisamos aplicar de forma "zebrada" a cor das linhas do corpo/`body` da tabela(onde ficam os dados dos clientes). 
+E para isso diretamente no elemento `tr` vamos aplicar de forma condicional a cor, se o indice do client/`i` modulo/`%` de `2` for igual/`===` a `0` significa que esse número é par, então/`?` será aplicado um background em um tom de roxo/`bg-purple-200`, senão/`:`(caso contrário - seja ímpar) será aplicado um background com outro tom de roxo mais claro/`bg-purple-100`:
+
+``` TSX
+import Client from "../core/Client";
+
+interface TableProps {
+  clients: Client[],
+}
+
+export default function Table(props: TableProps) {
+
+  function renderHeader() {
+    return (
+      <tr>
+        <th className="text-left p-2">Código</th>
+        <th className="text-left p-2">Nome</th>
+        <th className="text-left p-2">Idade</th>
+      </tr>
+    )
+  }
+
+  function renderData() {
+    return props.clients?.map((client, i) => {
+      return (
+        <tr key={client.id}
+          className={`
+            ${i % 2 === 0 ? "bg-purple-200" : "bg-purple-100"}
+          `}>
+          <td className="text-left p-2">{client.id}</td>
+          <td className="text-left p-2">{client.name}</td>
+          <td className="text-left p-2">{client.age}</td>
+        </tr>
+      )
+    })
+  }
+
+  return (
+    <table className="w-full rounded-xl overflow-hidden">
+      <thead className={`
+        text-gray-100
+        bg-gradient-to-r from-purple-500 to-purple-800
+      `}>
+       {renderHeader()}
+      </thead>
+      <tbody>
+        {renderData()}
+      </tbody>
+    </table>
+  )
+}
+```
+
+## Componente Tabela/Table #03
