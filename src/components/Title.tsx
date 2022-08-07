@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function Title(props) {
   return (
     <div className="flex flex-col justify-center">

@@ -158,13 +158,13 @@ function Home() {
 }
 ```
 
-## Criação dos componentes Layout e Título
+## Criação dos componentes Layout e Título/Title
 
 
 - Em `src/components` vamos criar o componente funcional `Layout.js`:
 
 ``` TSX
-import React from "react";
+import React from "react"; // usando TypeScript não precisamos importar o react
 
 export default function Layout(props) {
   return (
@@ -177,7 +177,7 @@ export default function Layout(props) {
 - Na `div` vamos inserir o `className` e como vamos usar um conjunto de classes vamos abrir chaves{} e inserir uma tamplet string(``) para trabalharmos com multiplas linhas:
 
 ``` TSX
-import React from "react";
+// import React from "react";
 
 export default function Layout(props) {
   return (
@@ -193,8 +193,6 @@ export default function Layout(props) {
 - Vamos aplicar o display `flex` e mudar o flex-direction para column(`flex-col`) e a largura da página ao invés de usarmos a largura inteira vamos usar dois terços(`w-2/3`):
 
 ``` TSX
-import React from "react";
-
 export default function Layout(props) {
   return (
     <div className={`
@@ -209,8 +207,6 @@ export default function Layout(props) {
 - Além disso, vamos aplicar um background-color na cor branca(`bg-white`), mudar a cor do texto para um tom de cinza escuro(`text-gray-800`) e arredondar as bordas da div(`rounded-md`):
 
 ``` TSX
-import React from "react";
-
 export default function Layout(props) {
   return (
     <div className={`
@@ -226,8 +222,6 @@ export default function Layout(props) {
 - Em seguida, dentro da `div container` vamos inserir uma outra `div` que irá representar o contéudo que ficará abaixo do componente `Title` que criaremos a frente:
 
 ``` TSX
-import React from "react";
-
 export default function Layout(props) {
   return (
     <div className={`
@@ -246,8 +240,6 @@ export default function Layout(props) {
 - Agora em `src/components` vamos criar o componente funcional `Title.js`:
 
 ``` TSX
-import React from "react";
-
 export default function Title(props) {
   return (
     <div>
@@ -261,8 +253,6 @@ export default function Title(props) {
 - Dentro do `h1` vamos colocar o conteúdo do que iremos receber dentro da referência do componente `Title` no componente `Layout`, ou seja, dentro de `props.children`:
 
 ``` TSX
-import React from "react";
-
 export default function Title(props) {
   return (
     <div>
@@ -276,7 +266,6 @@ export default function Title(props) {
 - Agora, dentro do componente `Layout` vamos importar o componente `Title` e criar a referência dele:
 
 ``` TSX
-import React from "react";
 import Title from "./Title";
 
 export default function Layout(props) {
@@ -298,7 +287,6 @@ export default function Layout(props) {
 Podemos criar uma `interface`(recurso do Typescript) chamada `LayoutProps` e nela conseguimos informar quais são as propriedades que esperamos receber nesse componente e o tipos delas(que é um objeto):
 
 ``` TSX
-import React from "react";
 import Title from "./Title";
 
 interface LayoutProps {
@@ -325,7 +313,6 @@ export default function Layout(props) {
 - Agora, dentro do componente podemos informar que as `props` são do tipo `LayoutProps`:
 
 ``` TSX
-import React from "react";
 import Title from "./Title";
 
 interface LayoutProps {
@@ -373,7 +360,6 @@ export default function Home() {
 - Agora que tempos dentro de `props` o atributo `title` vamos passar para o componente `Title` o que contém dentro de `props.title`(que será resgatado dentro do componente `Titilo` através de `props.children`):
 
 ``` TSX
-import React from "react";
 import Title from "./Title";
 
 interface LayoutProps {
@@ -399,8 +385,6 @@ export default function Layout(props: LayoutProps) {
 - Feito isso, vamos inserir algumas classes de estilo para melhorar a visualização do nosso componente `Title`:
 
 ``` TSX
-import React from "react";
-
 export default function Title(props) {
   return (
     <div className="flex flex-col justify-center">
@@ -417,7 +401,6 @@ export default function Title(props) {
 Para isso, no contéudo da `div` abaixo do componente `Title` vamos inserir o contéudo que está dentro de `props.children`:
 
 ``` TSX
-import React from "react";
 import Title from "./Title";
 
 interface LayoutProps {
@@ -443,7 +426,6 @@ export default function Layout(props: LayoutProps) {
 - Feito isso, vamos inserir algumas classes de estilo para melhorar a visualização do nosso componente `Layout`:
 
 ``` TSX
-import React from "react";
 import Title from "./Title";
 
 interface LayoutProps {
@@ -588,5 +570,343 @@ export default class Client {
   get age() {
     return this.#age
   }
+}
+```
+
+## Criação do Componente Tabela/Table
+
+- Agora, dentro de `src/components` iremos criar o componente funcional `Table.tsx`:
+
+``` TSX
+export default function Table(props) {
+  return (
+    <table>
+
+    </table>
+  )
+}
+```
+
+- Vamos criar uma `interface` para deixar mais amarrado o que esperamos receber como `props` dentro desse componente. 
+Vamos esperar receber um array de clientes/`clients` através da instância que criamos `Client` e vamos passar essa `interface` para `props`(ou seja, props vai ser do tipo TableProps):
+
+``` TSX
+import Client from "../core/Client"
+
+interface TableProps {
+  clients: Client[]
+}
+
+export default function Table(props: TableProps) {
+  return (
+    <table>
+
+    </table>
+  )
+}
+```
+
+- Outra coisa que podemos fazer é quebrar a renderização em multiplas funções, por exemplo, podemos simplesmente criar a tabela e colocar um `tr` que vai ser um `table row`/linha tabela e dentro dela vamos inserir os `th` que serão o cabeçalho da tabela(Código, Nome, Idade):
+
+``` TSX
+import Client from "../core/Client"
+
+interface TableProps {
+  clients: Client[],
+}
+
+export default function Table(props: TableProps) {
+  return (
+    <table>
+      <tr>
+        <th>Código</th>
+        <th>Nome</th>
+        <th>Idade</th>
+      </tr>
+    </table>
+  )
+}
+```
+
+- E para visualizarmos em tela, dentro do componente principal `index.tsx` no lugar do que seria o "conteúdo" vamos importar o componente `Table`:
+
+``` TSX
+import Layout from "../components/Layout";
+import Table from "../components/Table";
+
+export default function Home() {
+  return (
+    <div className={`
+      flex h-screen justify-center items-center
+      bg-gradient-to-r from-purple-500 to-blue-600
+      text-white
+    `}>
+      <Layout title="Cadastro Simples">
+        <Table />
+      </Layout>
+    </div>
+  )
+}
+```
+
+- O componente `Table` espera receber via `props` uma lista/array de clientes através do atributo `clients`. 
+E para isso, dentro do componente que contém a referência de `Table`(componente pai - index.tsx) vamos criar uma constante chamada `clients` que vai receber um array e nele iremos instânciar a classe/objeto `Client` passando os atributos. E em seguida, vamos passar essa const como propriedade para o atributo `clients`:
+
+``` TSX
+import Layout from "../components/Layout";
+import Table from "../components/Table";
+
+import Client from "../core/Client";
+
+export default function Home() {
+
+  const clients = [
+    new Client("Ana", 34, "1"),
+    new Client("Joana", 19, "2"),
+    new Client("Beatriz", 24, "3"),
+    new Client("João", 23, "4"),
+    new Client("Daniel", 30, "5"),
+    new Client("Rafael", 29, "6")
+  ];
+
+  return (
+    <div className={`
+      flex h-screen justify-center items-center
+      bg-gradient-to-r from-purple-500 to-blue-600
+      text-white
+    `}>
+      <Layout title="Cadastro Simples">
+        <Table clients={clients} />
+      </Layout>
+    </div>
+  )
+}
+```
+
+- Agora voltando a olhar para o componente `Table`, podemos eventualmente quebrar a nossa tabela em funções para deixarmos a renderização mais organizada. Por exemplo, podemos criar uma função chamada renderizar cabeçalho/`renderHeader` e nela vamos retornar/`return` o trecho do cabeçalho da nossa tabela e no elemento `table` vamos chamar essa função:
+
+``` TSX
+import Client from "../core/Client"
+
+interface TableProps {
+  clients: Client[],
+}
+
+export default function Table(props: TableProps) {
+
+  function renderHeader() {
+    return (
+      <tr>
+        <th>Código</th>
+        <th>Nome</th>
+        <th>Idade</th>
+      </tr>
+    )
+  }
+
+  return (
+    <table>
+      {renderHeader()}
+    </table>
+  )
+}
+```
+
+- Outra parte que podemos trabalhar é na parte de renderizar os dados e para isso, vamos criar uma função chamada renderizar dados/`renderData` e dentro dela vamos retornar/`return` a lista de clientes/`clients` que iremos receber via `props`. E como é um array vamos fazer um `map` para percorrer cada cliente/`client` e seu indice/`i`:
+
+``` TSX
+import Client from "../core/Client"
+
+interface TableProps {
+  clients: Client[],
+}
+
+export default function Table(props: TableProps) {
+
+  function renderHeader() {
+    return (
+      <tr>
+        <th>Código</th>
+        <th>Nome</th>
+        <th>Idade</th>
+      </tr>
+    )
+  }
+
+  function renderData() {
+    return props.clients.map((client, i) => {
+      
+    })
+  }
+
+  return (
+    <table>
+      {renderHeader()}
+    </table>
+  )
+}
+```
+
+- Lembrando se o array estiver vazio e formos usar o `map` isso vai ocasionar um erro, então para evitarmos isso vamos usar o `?` para verificar se `clients` é vazio/`nul`, ou seja, o `map` só vai ser executado se `clients` estiver preenchido:
+
+``` TSX
+import Client from "../core/Client"
+
+interface TableProps {
+  clients: Client[],
+}
+
+export default function Table(props: TableProps) {
+
+  function renderHeader() {
+    return (
+      <tr>
+        <th>Código</th>
+        <th>Nome</th>
+        <th>Idade</th>
+      </tr>
+    )
+  }
+
+  function renderData() {
+    return props.clients?.map((client, i) => {
+
+    })
+  }
+
+  return (
+    <table>
+      {renderHeader()}
+    </table>
+  )
+}
+```
+
+- E na função callback desse `map` vamos retornar/`return` para cada cliente/`client` uma nova linha na tabela/`tr` e dentro dela colunas/`td` para cada informação do cliente/`client` em questão. E já que estamos trabalhando com uma lista de elementos JSX vamos precisar definir uma chave/`key` no elemento conteiner que nesse caso é o `tr`:
+
+``` TSX
+import Client from "../core/Client"
+
+interface TableProps {
+  clients: Client[],
+}
+
+export default function Table(props: TableProps) {
+
+  function renderHeader() {
+    return (
+      <tr>
+        <th>Código</th>
+        <th>Nome</th>
+        <th>Idade</th>
+      </tr>
+    )
+  }
+
+  function renderData() {
+    return props.clients?.map((client, i) => {
+      return (
+        <tr key={client.id}>
+          <td>{client.id}</td>
+          <td>{client.name}</td>
+          <td>{client.age}</td>
+        </tr>
+      )
+    })
+  }
+
+  return (
+    <table>
+      {renderHeader()}
+    </table>
+  )
+}
+```
+
+- E uma vez feito isso, dentro do elemento `table` podemos chamar a função `renderData` para renderizar os dados dos clientes/`clients` na tabela:
+
+``` TSX
+import Client from "../core/Client"
+
+interface TableProps {
+  clients: Client[],
+}
+
+export default function Table(props: TableProps) {
+
+  function renderHeader() {
+    return (
+      <tr>
+        <th>Código</th>
+        <th>Nome</th>
+        <th>Idade</th>
+      </tr>
+    )
+  }
+
+  function renderData() {
+    return props.clients?.map((client, i) => {
+      return (
+        <tr key={client.id}>
+          <td>{client.id}</td>
+          <td>{client.name}</td>
+          <td>{client.age}</td>
+        </tr>
+      )
+    })
+  }
+
+  return (
+    <table>
+      {renderHeader()}
+      {renderData()}
+    </table>
+  )
+}
+```
+
+- Para melhor organização de sintaxe, vamos colocar/chamar a função que renderiza o cabeçalho/`renderHeader` dentro do elemento `thead` e chamar a função que renderiza os dados dentro do elemento `tbody`:
+
+``` TSX
+import Client from "../core/Client"
+
+interface TableProps {
+  clients: Client[],
+}
+
+export default function Table(props: TableProps) {
+
+  function renderHeader() {
+    return (
+      <tr>
+        <th>Código</th>
+        <th>Nome</th>
+        <th>Idade</th>
+      </tr>
+    )
+  }
+
+  function renderData() {
+    return props.clients?.map((client, i) => {
+      return (
+        <tr key={client.id}>
+          <td>{client.id}</td>
+          <td>{client.name}</td>
+          <td>{client.age}</td>
+        </tr>
+      )
+    })
+  }
+
+  return (
+    <table>
+      <thead>
+       {renderHeader()}
+      </thead>
+      <tbody>
+        {renderData()}
+      </tbody>
+    </table>
+  )
 }
 ```

@@ -1,6 +1,19 @@
 import Layout from "../components/Layout";
+import Table from "../components/Table";
+
+import Client from "../core/Client";
 
 export default function Home() {
+
+  const clients = [
+    new Client("Ana", 34, "1"),
+    new Client("Joana", 19, "2"),
+    new Client("Beatriz", 24, "3"),
+    new Client("João", 23, "4"),
+    new Client("Daniel", 30, "5"),
+    new Client("Rafael", 29, "6")
+  ];
+
   return (
     <div className={`
       flex h-screen justify-center items-center
@@ -8,7 +21,7 @@ export default function Home() {
       text-white
     `}>
       <Layout title="Cadastro Simples">
-        <span>Conteúdo - Componente filho(podemos receber através de props.children)</span>
+        <Table clients={clients} />
       </Layout>
     </div>
   )
