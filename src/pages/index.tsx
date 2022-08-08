@@ -1,3 +1,5 @@
+import Button from "../components/Button";
+import Form from "../components/Form";
 import Layout from "../components/Layout";
 import Table from "../components/Table";
 
@@ -6,12 +8,12 @@ import Client from "../core/Client";
 export default function Home() {
 
   const clients = [
-    new Client("Ana", 34, "1"),
-    new Client("Joana", 19, "2"),
-    new Client("Beatriz", 24, "3"),
-    new Client("João", 23, "4"),
-    new Client("Daniel", 30, "5"),
-    new Client("Rafael", 29, "6")
+    new Client("Ana Goez", 34, "1"),
+    new Client("Joana Gomes", 19, "2"),
+    new Client("Beatriz Mendes", 24, "3"),
+    new Client("João Garrido", 23, "4"),
+    new Client("Daniel Malfaia", 30, "5"),
+    new Client("Rafael Costa", 29, "6")
   ];
 
   function selectedClient(client: Client) {
@@ -29,11 +31,20 @@ export default function Home() {
       text-white
     `}>
       <Layout title="Cadastro Simples">
-        <Table 
+        <div className="flex justify-end">
+          <Button 
+            colorInitial="from-green-400" 
+            colorFinale="to-green-700"
+          >
+            Novo Cliente
+          </Button>
+        </div>
+        {/* <Table 
           clients={clients} 
           selectedClient={selectedClient} 
           excludedClient={excludedClient} 
-        />
+        /> */}
+        <Form client={clients[0]} />
       </Layout>
     </div>
   )

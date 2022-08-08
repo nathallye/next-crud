@@ -1,9 +1,9 @@
 import Client from "../core/Client";
-import { EditIcon, TrashIcon} from "./Icon";
+import { EditIcon, TrashIcon} from "./Icons";
 
 interface TableProps {
-  clients: Client[],
-  selectedClient?: (client: Client) => void,
+  clients: Client[]
+  selectedClient?: (client: Client) => void
   excludedClient?: (client: Client) => void
 }
 

@@ -612,7 +612,7 @@ export default function Table(props: TableProps) {
 import Client from "../core/Client";
 
 interface TableProps {
-  clients: Client[],
+  clients: Client[]
 }
 
 export default function Table(props: TableProps) {
@@ -689,7 +689,7 @@ export default function Home() {
 import Client from "../core/Client";
 
 interface TableProps {
-  clients: Client[],
+  clients: Client[]
 }
 
 export default function Table(props: TableProps) {
@@ -718,7 +718,7 @@ export default function Table(props: TableProps) {
 import Client from "../core/Client";
 
 interface TableProps {
-  clients: Client[],
+  clients: Client[]
 }
 
 export default function Table(props: TableProps) {
@@ -753,7 +753,7 @@ export default function Table(props: TableProps) {
 import Client from "../core/Client";
 
 interface TableProps {
-  clients: Client[],
+  clients: Client[]
 }
 
 export default function Table(props: TableProps) {
@@ -788,7 +788,7 @@ export default function Table(props: TableProps) {
 import Client from "../core/Client";
 
 interface TableProps {
-  clients: Client[],
+  clients: Client[]
 }
 
 export default function Table(props: TableProps) {
@@ -829,7 +829,7 @@ export default function Table(props: TableProps) {
 import Client from "../core/Client";
 
 interface TableProps {
-  clients: Client[],
+  clients: Client[]
 }
 
 export default function Table(props: TableProps) {
@@ -871,7 +871,7 @@ export default function Table(props: TableProps) {
 import Client from "../core/Client";
 
 interface TableProps {
-  clients: Client[],
+  clients: Client[]
 }
 
 export default function Table(props: TableProps) {
@@ -920,7 +920,7 @@ Primeiramente, no elemento `tread` dentro da propriedade `className`(usando chav
 import Client from "../core/Client";
 
 interface TableProps {
-  clients: Client[],
+  clients: Client[]
 }
 
 export default function Table(props: TableProps) {
@@ -968,7 +968,7 @@ export default function Table(props: TableProps) {
 import Client from "../core/Client";
 
 interface TableProps {
-  clients: Client[],
+  clients: Client[]
 }
 
 export default function Table(props: TableProps) {
@@ -1018,7 +1018,7 @@ Além disso, vamos aplicar a propriedade `rounded-xl` para arredondar a borda da
 import Client from "../core/Client";
 
 interface TableProps {
-  clients: Client[],
+  clients: Client[]
 }
 
 export default function Table(props: TableProps) {
@@ -1067,7 +1067,7 @@ export default function Table(props: TableProps) {
 import Client from "../core/Client";
 
 interface TableProps {
-  clients: Client[],
+  clients: Client[]
 }
 
 export default function Table(props: TableProps) {
@@ -1116,7 +1116,7 @@ export default function Table(props: TableProps) {
 import Client from "../core/Client";
 
 interface TableProps {
-  clients: Client[],
+  clients: Client[]
 }
 
 export default function Table(props: TableProps) {
@@ -1166,7 +1166,7 @@ E para isso diretamente no elemento `tr` vamos aplicar de forma condicional a co
 import Client from "../core/Client";
 
 interface TableProps {
-  clients: Client[],
+  clients: Client[]
 }
 
 export default function Table(props: TableProps) {
@@ -1255,7 +1255,7 @@ export const TrashIcon = (
 import Client from "../core/Client";
 
 interface TableProps {
-  clients: Client[],
+  clients: Client[]
 }
 
 export default function Table(props: TableProps) {
@@ -1309,7 +1309,7 @@ E dentro da função que renderiza os dados/`renderData` da tabela vamos chamar 
 import Client from "../core/Client";
 
 interface TableProps {
-  clients: Client[],
+  clients: Client[]
 }
 
 export default function Table(props: TableProps) {
@@ -1371,7 +1371,7 @@ export default function Table(props: TableProps) {
 import Client from "../core/Client";
 
 interface TableProps {
-  clients: Client[],
+  clients: Client[]
 }
 
 export default function Table(props: TableProps) {
@@ -1427,14 +1427,14 @@ export default function Table(props: TableProps) {
 }
 ```
 
-- Agora, dentro do `td` podemos criar os botões/`button` e nele vamos usar os ícones que definimos dentro do arquivo `Icon`:
+- Agora, dentro do `td` podemos criar os botões/`button` e nele vamos usar os ícones que definimos dentro do arquivo `Icons`:
 
 ``` TSX
 import Client from "../core/Client";
-import { EditIcon, TrashIcon} from "./Icon";
+import { EditIcon, TrashIcon} from "./Icons";
 
 interface TableProps {
-  clients: Client[],
+  clients: Client[]
 }
 
 export default function Table(props: TableProps) {
@@ -1495,10 +1495,10 @@ export default function Table(props: TableProps) {
 
 ``` TSX
 import Client from "../core/Client";
-import { EditIcon, TrashIcon} from "./Icon";
+import { EditIcon, TrashIcon} from "./Icons";
 
 interface TableProps {
-  clients: Client[],
+  clients: Client[]
 }
 
 export default function Table(props: TableProps) {
@@ -1571,11 +1571,11 @@ export default function Table(props: TableProps) {
 
 ``` TSX
 import Client from "../core/Client";
-import { EditIcon, TrashIcon} from "./Icon";
+import { EditIcon, TrashIcon} from "./Icons";
 
 interface TableProps {
-  clients: Client[],
-  selectedClient?: (client: Client) => void,
+  clients: Client[]
+  selectedClient?: (client: Client) => void
   excludedClient?: (client: Client) => void
 }
 
@@ -1649,11 +1649,11 @@ export default function Table(props: TableProps) {
 
 ``` TSX
 import Client from "../core/Client";
-import { EditIcon, TrashIcon} from "./Icon";
+import { EditIcon, TrashIcon} from "./Icons";
 
 interface TableProps {
-  clients: Client[],
-  selectedClient?: (client: Client) => void,
+  clients: Client[]
+  selectedClient?: (client: Client) => void
   excludedClient?: (client: Client) => void
 }
 
@@ -1729,11 +1729,11 @@ export default function Table(props: TableProps) {
 
 ``` TSX
 import Client from "../core/Client";
-import { EditIcon, TrashIcon} from "./Icon";
+import { EditIcon, TrashIcon} from "./Icons";
 
 interface TableProps {
-  clients: Client[],
-  selectedClient?: (client: Client) => void,
+  clients: Client[]
+  selectedClient?: (client: Client) => void
   excludedClient?: (client: Client) => void
 }
 
@@ -1811,11 +1811,11 @@ export default function Table(props: TableProps) {
 
 ``` TSX
 import Client from "../core/Client";
-import { EditIcon, TrashIcon} from "./Icon";
+import { EditIcon, TrashIcon} from "./Icons";
 
 interface TableProps {
-  clients: Client[],
-  selectedClient?: (client: Client) => void,
+  clients: Client[]
+  selectedClient?: (client: Client) => void
   excludedClient?: (client: Client) => void
 }
 
@@ -1895,11 +1895,11 @@ export default function Table(props: TableProps) {
 
 ``` TSX
 import Client from "../core/Client";
-import { EditIcon, TrashIcon} from "./Icon";
+import { EditIcon, TrashIcon} from "./Icons";
 
 interface TableProps {
-  clients: Client[],
-  selectedClient?: (client: Client) => void,
+  clients: Client[]
+  selectedClient?: (client: Client) => void
   excludedClient?: (client: Client) => void
 }
 
@@ -2061,11 +2061,11 @@ export default function Home() {
 
 ``` TSX
 import Client from "../core/Client";
-import { EditIcon, TrashIcon} from "./Icon";
+import { EditIcon, TrashIcon} from "./Icons";
 
 interface TableProps {
-  clients: Client[],
-  selectedClient?: (client: Client) => void,
+  clients: Client[]
+  selectedClient?: (client: Client) => void
   excludedClient?: (client: Client) => void
 }
 
@@ -2141,3 +2141,948 @@ export default function Table(props: TableProps) {
     </table>
   )
 ```
+
+## Criação do componente Botão/Button(cadastrar novo cliente)
+
+- Dentro de `src/components` iremos criar um componente funcional chamado botão/`Button.tsx`:
+
+``` TSX
+export default function Button(props) {
+  return (
+    <button>
+      Button
+    </button>
+  )
+}
+```
+
+- Podemos criar uma `interface`(recurso do Typescript) chamada `ButtonProps` e nela conseguimos informar quais são as propriedades que esperamos receber nesse componente e o tipos delas(que é um objeto). E em seguida, vamos passar essa interface criada para props, ou seja, `props` vai ser do tipo `ButtonProps`:
+
+``` TSX
+interface ButtonProps {
+  children: any 
+}
+
+export default function Button(props: ButtonProps) {
+  return (
+    <button>
+      {props.children}
+    </button>
+  )
+}
+```
+
+- Vamos importar e criar a referência desse componente `Button` na nossa interface gráfica(index.tsx). Lembrando que de acordo com o que definimos na interface `ButtonProps` o componente irá exigir que seja passado um elemento filho(dentro da referência dele):
+
+``` TSX
+import Button from "../components/Button";
+import Layout from "../components/Layout";
+import Table from "../components/Table";
+
+import Client from "../core/Client";
+
+export default function Home() {
+
+  const clients = [
+    new Client("Ana", 34, "1"),
+    new Client("Joana", 19, "2"),
+    new Client("Beatriz", 24, "3"),
+    new Client("João", 23, "4"),
+    new Client("Daniel", 30, "5"),
+    new Client("Rafael", 29, "6")
+  ];
+
+  function selectedClient(client: Client) {
+    console.log(`Editar ${client.name}`)
+  }
+
+  function excludedClient(client: Client) {
+    console.log(`Excluir ${client.name}`)
+  }
+
+  return (
+    <div className={`
+      flex h-screen justify-center items-center
+      bg-gradient-to-r from-purple-500 to-blue-600
+      text-white
+    `}>
+      <Layout title="Cadastro Simples">
+        <Button>Novo Cliente</Button>
+        <Table 
+          clients={clients} 
+          selectedClient={selectedClient} 
+          excludedClient={excludedClient} 
+        />
+      </Layout>
+    </div>
+  )
+}
+```
+
+- Para alinhar esse componente `Button` a direita da tela, vamos colocar ele dentro de uma `div` e aplicar as classes de estilo `flex`(para ativar o flex box) e o `justify-end`(para alinhar o elemento a direita da tela em relação ao main axis/eixo principal que nesse caso é a linha/horizontal):
+
+``` TSX
+import Button from "../components/Button";
+import Layout from "../components/Layout";
+import Table from "../components/Table";
+
+import Client from "../core/Client";
+
+export default function Home() {
+
+  const clients = [
+    new Client("Ana", 34, "1"),
+    new Client("Joana", 19, "2"),
+    new Client("Beatriz", 24, "3"),
+    new Client("João", 23, "4"),
+    new Client("Daniel", 30, "5"),
+    new Client("Rafael", 29, "6")
+  ];
+
+  function selectedClient(client: Client) {
+    console.log(`Editar ${client.name}`)
+  }
+
+  function excludedClient(client: Client) {
+    console.log(`Excluir ${client.name}`)
+  }
+
+  return (
+    <div className={`
+      flex h-screen justify-center items-center
+      bg-gradient-to-r from-purple-500 to-blue-600
+      text-white
+    `}>
+      <Layout title="Cadastro Simples">
+        <div className="flex justify-end">
+          <Button>Novo Cliente</Button>
+        </div>
+        <Table 
+          clients={clients} 
+          selectedClient={selectedClient} 
+          excludedClient={excludedClient} 
+        />
+      </Layout>
+    </div>
+  )
+}
+```
+
+- Voltando no componente `Button` vamos aplicar as classes de estilo no elemento button:
+
+``` TSX
+interface ButtonProps {
+  children: any
+}
+
+export default function Button(props: ButtonProps) {
+  return (
+    <button className={`
+      bg-gradient-to-r from-green-400 to-green-700
+      text-white mb-4 px-4 py-2 rounded-md 
+    `}>
+      {props.children}
+    </button>
+  )
+}
+```
+
+## Criação dos componentes Formulario/Form e Entrada/Input
+
+- Dentro de `src/components` vamos criar o componente funcional `Form.tsx`:
+
+``` TSX
+interface FormProps {
+
+}
+
+export default function Form(props: FormProps) {
+  return (
+    <div>Form</div>
+  )
+}
+```
+
+- Dentro de `src/components` vamos criar o componente funcional `Input.tsx`:
+
+``` TSX
+interface InputProps {
+
+}
+
+export default function Input(props: InputProps) {
+  return (
+    <div>Input</div>
+  )
+}
+```
+
+- No componente `Form` vamos importar e criar a referência do componente `Input`:
+
+``` TSX
+import Input from "./Input";
+
+interface FormProps {
+
+}
+
+export default function Form(props: FormProps) {
+  return (
+    <div>
+      <Input />
+    </div>
+  )
+}
+```
+
+- E agora vamos trabalhar com o componente `Input`. 
+Vamos definir nele um `label` e dentro dele vamos colocar um texto/`text` que iremos esperar receber(obrigatóriamente) via props.
+E além disso, vamos definir um `input` do tipo/`type` que iremos esperar receber(opcionalmente) via props e esse `type` só pode ser `text` ou `number`, caso não seja informado vamos assumir que o padrão será `text`; e o valor/`value` que iremos esperar receber(obrigatóriamente) via props e esse `value` pode ser qualquer tipo/`any`:
+
+``` TSX
+interface InputProps {
+  text: string
+  type?: "text" | "number"
+  value: any
+}
+
+export default function Input(props: InputProps) {
+  return (
+    <div>
+      <label>
+        {props.text}
+      </label>
+      <input 
+        type={props.type ?? "text"} 
+        value={props.value}
+      />
+    </div>
+  )
+}
+```
+
+- Além disso, esse `input` poderá receber outros atributos também(de forma opcional). Por exemplo, somente leitura/`readOnly` que será do tipo `boolean` e se for passado o valor será `true` se não for será `false`:
+
+``` TSX
+interface InputProps {
+  text: string
+  type?: "text" | "number"
+  value: any
+  readOnly?: boolean
+}
+
+export default function Input(props: InputProps) {
+  return (
+    <div>
+      <label>
+        {props.text}
+      </label>
+      <input 
+        type={props.type ?? "text"} 
+        value={props.value}
+        readOnly={props.readOnly}
+      />
+    </div>
+  )
+}
+```
+
+- E agora, voltando para o componente pai do componente `Input`, que é o `Form`, podemos notar que agora ele está exigindo os atributos obrigatórios, e vamos passar os valores para tais atribuitos:
+
+``` TSX
+import Input from "./Input";
+
+interface FormProps {
+  
+}
+
+export default function Form(props: FormProps) {
+  return (
+    <div>
+      <Input 
+        text="Nome" value="Teste"
+      />
+    </div>
+  )
+}
+```
+
+- E por hora, para visualizarmos em tela, no arquivo que renderiza nossa interface gráfica(index.tsx) vamos comentar a `Table` e em seguida importar e criar a referência do componente `Form`(de forma temporária):
+
+``` TSX
+import Button from "../components/Button";
+import Form from "../components/Form";
+import Layout from "../components/Layout";
+import Table from "../components/Table";
+
+import Client from "../core/Client";
+
+export default function Home() {
+
+  const clients = [
+    // [...]
+  ];
+
+  function selectedClient(client: Client) {
+    // console.log(`Editar ${client.name}`)
+  }
+
+  function excludedClient(client: Client) {
+    // console.log(`Excluir ${client.name}`)
+  }
+
+  return (
+    <div className={`
+      flex h-screen justify-center items-center
+      bg-gradient-to-r from-purple-500 to-blue-600
+      text-white
+    `}>
+      <Layout title="Cadastro Simples">
+        <div className="flex justify-end">
+          <Button>Novo Cliente</Button>
+        </div>
+        {/* <Table 
+          clients={clients} 
+          selectedClient={selectedClient} 
+          excludedClient={excludedClient} 
+        /> */}
+        <Form />
+      </Layout>
+    </div>
+  )
+}
+```
+
+- Voltando no componente `Input` iremos aplicar classes de estilo nos elementos para melhorar sua visualização:
+
+``` TSX
+interface InputProps {
+  text: string
+  type?: "text" | "number"
+  value: any
+  readOnly?: boolean
+}
+
+export default function Input(props: InputProps) {
+  return (
+    <div className="flex flex-col">
+      <label className="mb-4">
+        {props.text}
+      </label>
+      <input 
+        type={props.type ?? "text"} 
+        value={props.value}
+        readOnly={props.readOnly}
+        className={`
+          border border-purple-500 rounded-lg
+          focus:outline-none bg-gray-50 px-4 py-2
+          ${props.readOnly ? "" : "focus:bg-white" {/*se somente leitura for passado, significa que é true e não vai ser aplicado nada, caso contrário será aplicado um foco quando clicado*/}} 
+        `}
+      />
+    </div>
+  )
+}
+```
+
+- Agora no componente `Form` iremos definir os outros inputs(criando uma nova referência ao componente `Input` e passando os valores aos atributos):
+
+``` TSX
+import Input from "./Input";
+
+interface FormProps {
+  
+}
+
+export default function Form(props: FormProps) {
+  return (
+    <div>
+      <Input text="Nome" value="Teste" />
+      <Input text="Idade" type="number" value="10" />
+    </div>
+  )
+}
+```
+
+- E nesse componente iremos criar dois estados(com o hook `useState`), um para controlar o nome/`name`:
+
+``` TSX
+import { useState } from "react";
+
+import Input from "./Input";
+
+interface FormProps {
+  
+}
+
+export default function Form(props: FormProps) {
+
+  const [name, setName] = useState();
+
+  return (
+    <div>
+      <Input text="Nome" value="Teste" />
+      <Input text="Idade" type="number" value="10" />
+    </div>
+  )
+}
+```
+
+- E o valor inicial desse estado/state `name` iremos pegar a partir do cliente, e para isso vamos definir dentro da `interface` desse componente que esperamos receber via props um cliente/`client` do tipo `Client`.
+E em seguida, vamos pegar o valor do state vem de `props.client.name`, mas só iremos acessar o nome caso o `client` esteja setado com `props.client?.name` e como valor padrão(caso `client` não esteja definido) vamos colocar uma string vazia "":
+
+``` TSX
+import { useState } from "react";
+
+import Client from "../core/Client";
+import Input from "./Input";
+
+interface FormProps {
+  client: Client
+}
+
+export default function Form(props: FormProps) {
+
+  const [name, setName] = useState(props.client?.name ?? "");
+
+  return (
+    <div>
+      <Input text="Nome" value="Teste" />
+      <Input text="Idade" type="number" value="10" />
+    </div>
+  )
+}
+```
+
+- E o mesmo iremos fazer para o estado/state de idade/`age`, a diferença que caso `props.client?.age` não esteja definido o valor padrão será 0:
+
+``` TSX
+import { useState } from "react";
+
+import Client from "../core/Client";
+import Input from "./Input";
+
+interface FormProps {
+  client: Client
+}
+
+export default function Form(props: FormProps) {
+
+  const id = props.client?.id;
+  const [name, setName] = useState(props.client?.name ?? "");
+  const [age, setAge] = useState(props.client?.age ?? "");
+
+  return (
+    <div>
+      {id 
+        ? (<Input text="Código" value="Teste" />)
+        : (false)
+      }
+      <Input text="Nome" value="Teste" />
+      <Input text="Idade" type="number" value="10" />
+    </div>
+  )
+}
+```
+
+- E se esse `client` estiver setado e tiver `id` significa que estamos modificando algo que já existe, caso contrário significa que estamos criando um cliente novo.
+Então iremos criar uma const chamada `id` que irá receber o id do client via props(`props.client.id`) e vamos usar o opctional chane(`props.client?.id`) para ele só acessar esse id caso o `client` estiver setado:
+
+``` TSX
+import { useState } from "react";
+
+import Client from "../core/Client";
+import Input from "./Input";
+
+interface FormProps {
+  client: Client
+}
+
+export default function Form(props: FormProps) {
+
+  const id = props.client?.id;
+  const [name, setName] = useState(props.client?.name ?? "");
+  const [age, setAge] = useState(props.client?.age ?? "");
+
+  return (
+    <div>
+      <Input text="Nome" value="Teste" />
+      <Input text="Idade" type="number" value="10" />
+    </div>
+  )
+}
+```
+
+- E agora, se o `id` for diferente de vazio/`nul` podemos mostrar o código do usuário, através de uma renderização condicional:
+
+``` TSX
+import { useState } from "react";
+
+import Client from "../core/Client";
+import Input from "./Input";
+
+interface FormProps {
+  client: Client
+}
+
+export default function Form(props: FormProps) {
+
+  const id = props.client?.id;
+  const [name, setName] = useState(props.client?.name ?? "");
+  const [age, setAge] = useState(props.client?.age ?? "");
+
+  return (
+    <div>
+      {id 
+        ? (<Input text="Código" value="Teste" readOnly/>)
+        : (false)
+      }
+      <Input text="Nome" value="Teste" />
+      <Input text="Idade" type="number" value="10" />
+    </div>
+  )
+}
+```
+
+- E agora iremos vincular os `values` dos `Inputs` para apontar para os estados definidos, no caso de `name` e `age` e o no caso do `código` irá aportar para a const `id`(pois não precisamos controlar o estado já que é somente leitura/readOnly):
+
+``` TSX
+import { useState } from "react";
+
+import Client from "../core/Client";
+import Input from "./Input";
+
+interface FormProps {
+  client: Client
+}
+
+export default function Form(props: FormProps) {
+
+  const id = props.client?.id;
+  const [name, setName] = useState(props.client?.name ?? "");
+  const [age, setAge] = useState(props.client?.age ?? "");
+
+  return (
+    <div>
+      {id 
+        ? (<Input text="Código" value={id} readOnly />)
+        : (false)
+      }
+      <Input text="Nome" value={name} />
+      <Input text="Idade" type={"number"} value={age} />
+    </div>
+  )
+}
+```
+
+- Agora precisamos ter uma forma de alterar os campos de entrada(que não são somente leitura) e para isso dentro do componente `Input` iremos precisar receber uma função para dizer quando o valor foi modificado. E para isso, na `interface` iremos esperar receber um atributo/função opcional chamado valor mudou/`valueChanged` e nela iremos receber de volta o `value` do tipo `any` que irá retornar `void`:
+
+``` TSX
+interface InputProps {
+  text: string
+  type?: "text" | "number"
+  value: any
+  readOnly?: boolean
+  valueChanged?: (value: any) => void
+}
+
+export default function Input(props: InputProps) {
+  return (
+    <div className="flex flex-col">
+      <label className="mb-4">
+        {props.text}
+      </label>
+      <input 
+        type={props.type ?? "text"} 
+        value={props.value}
+        readOnly={props.readOnly}
+        className={`
+          border border-purple-500 rounded-lg
+          focus:outline-none bg-gray-50 px-4 py-2
+          ${props.readOnly ? "" : "focus:bg-white"} 
+        `}
+      />
+    </div>
+  )
+}
+```
+
+- E uma vez que recebemos essa função podemos colocá-la dentro do evendo `onChange` do nosso `input`, ou seja, quando recebermos uma notificação que ouve uma mudança iremos receber um evento/`e` e iremos chamar a função `valueChanged` que recebemos em props e iremos passar como parâmetro para o `value` o evento/`e.target.value`:
+
+``` TSX
+interface InputProps {
+  text: string
+  type?: "text" | "number"
+  value: any
+  readOnly?: boolean
+  valueChanged?: (value: any) => void
+}
+
+export default function Input(props: InputProps) {
+  return (
+    <div className="flex flex-col">
+      <label className="mb-4">
+        {props.text}
+      </label>
+      <input 
+        type={props.type ?? "text"} 
+        value={props.value}
+        readOnly={props.readOnly}
+        onChange={e => props.valueChanged?.(e.target.value)}
+        className={`
+          border border-purple-500 rounded-lg
+          focus:outline-none bg-gray-50 px-4 py-2
+          ${props.readOnly ? "" : "focus:bg-white"} 
+        `}
+      />
+    </div>
+  )
+}
+```
+
+- E agora, dentro de `Form` podemos passar para o atributo `valueChanged`(valor mudou) de `Input` a função que muda o estado do componente:
+
+``` TSX
+import { useState } from "react";
+
+import Client from "../core/Client";
+import Input from "./Input";
+
+interface FormProps {
+  client: Client
+}
+
+export default function Form(props: FormProps) {
+
+  const id = props.client?.id;
+  const [name, setName] = useState(props.client?.name ?? "");
+  const [age, setAge] = useState(props.client?.age ?? "");
+
+  return (
+    <div>
+      {id 
+        ? (<Input 
+            text="Código" 
+            value={id} 
+            readOnly 
+          />)
+        : (false)
+      }
+      <Input 
+        text="Nome" 
+        value={name} 
+        valueChanged={setName} 
+      />
+      <Input 
+        text="Idade" 
+        type={"number"} 
+        value={age} 
+        valueChanged={setAge} 
+      />
+    </div>
+  )
+}
+```
+
+- E voltando no componente `Input` podemos definir que esperamos um parâmetro opcional `className` o qual iremos interpolar na div container desse elemente:
+
+``` TSX
+interface InputProps {
+  text: string
+  type?: "text" | "number"
+  value: any
+  readOnly?: boolean
+  valueChanged?: (value: any) => void
+  className?: string
+}
+
+export default function Input(props: InputProps) {
+  return (
+    <div className={`flex flex-col ${props.className}`}>
+      <label className="mb-2">
+        {props.text}
+      </label>
+      <input 
+        type={props.type ?? "text"} 
+        value={props.value}
+        readOnly={props.readOnly}
+        onChange={e => props.valueChanged?.(e.target.value)}
+        className={`
+          border border-purple-500 rounded-lg
+          focus:outline-none bg-gray-50 px-4 py-2
+          ${props.readOnly ? "" : "focus:bg-white"} 
+        `}
+      />
+    </div>
+  )
+}
+```
+
+- E no componente `Form` iremos passar uma margim botton de 5px/`mb-5` para os `Input` que precisam desse espaçamento:
+
+``` TSX
+import { useState } from "react";
+
+import Client from "../core/Client";
+import Input from "./Input";
+
+interface FormProps {
+  client: Client
+}
+
+export default function Form(props: FormProps) {
+
+  const id = props.client?.id;
+  const [name, setName] = useState(props.client?.name ?? "");
+  const [age, setAge] = useState(props.client?.age ?? "");
+
+  return (
+    <div>
+      {id 
+        ? (<Input 
+            text="Código" 
+            value={id} 
+            readOnly 
+            className="mb-5"
+          />)
+        : (false)
+      }
+      <Input 
+        text="Nome" 
+        value={name} 
+        valueChanged={setName} 
+        className="mb-5"
+      />
+      <Input 
+        text="Idade" 
+        type={"number"} 
+        value={age} 
+        valueChanged={setAge} 
+      />
+    </div>
+  )
+}
+```
+
+- Por fim, iremos definir os botões de `Salvar` e `Cancelar` do nosso formulário/`Form`.
+E para isso, primeiramente vamos no componente botão/`Button` e vamos definir que iremos esperar receber valores opcionais para os atributos cor inicial/`colorInitial` e cor final/`colorFinale` que serão utilizadas para difinir as cores do background gradiente dos botões:
+
+``` TSX
+interface ButtonProps {
+  children: any
+  colorInitial?: "from-green-400" | "from-blue-400" | "from-gray-400"
+  colorFinale?: "to-green-700" | "to-blue-700" | "to-gray-700"
+}
+
+export default function Button(props: ButtonProps) {
+  return (
+    <button className={`
+      bg-gradient-to-r ${props.colorInitial} ${props.colorFinale}
+      text-white mb-4 px-4 py-2 rounded-md 
+    `}>
+      {props.children}
+    </button>
+  )
+}
+```
+
+- E para evitar erros futuros, iremos definir constantes com valores padrões(que serão tons de cinza) caso `colorInitial` e `colorFinale` não estejam definidos:
+
+``` TSX
+interface ButtonProps {
+  children: any
+  colorInitial?: "from-green-400" | "from-blue-400" | "from-gray-400"
+  colorFinale?: "to-green-700" | "to-blue-700" | "to-gray-700"
+}
+
+export default function Button(props: ButtonProps) {
+
+  const colorInitial = props.colorInitial ?? "from-gray-400";
+  const colorFinale = props.colorFinale ?? "to-gray-700";
+
+  return (
+    <button className={`
+      bg-gradient-to-r ${colorInitial} ${colorFinale}
+      text-white mb-4 mr-4 px-4 py-2 rounded-md 
+    `}>
+      {props.children}
+    </button>
+  )
+}
+```
+
+- Feito isso, dentro do `Form` podemos criar os novos `Button` passando aos atributo as cores desejadas:
+
+``` TSX
+import { useState } from "react";
+
+import Client from "../core/Client";
+import Input from "./Input";
+import Button from "./Button";
+
+interface FormProps {
+  client: Client
+}
+
+export default function Form(props: FormProps) {
+
+  const id = props.client?.id;
+  const [name, setName] = useState(props.client?.name ?? "");
+  const [age, setAge] = useState(props.client?.age ?? "");
+
+  return (
+    <div>
+      {id 
+        ? (<Input 
+            text="Código" 
+            value={id} 
+            readOnly 
+            className="mb-5"
+          />)
+        : (false)
+      }
+      <Input 
+        text="Nome" 
+        value={name} 
+        valueChanged={setName} 
+        className="mb-4"
+      />
+      <Input 
+        text="Idade" 
+        type={"number"} 
+        value={age} 
+        valueChanged={setAge} 
+      />
+
+      <div>
+        <Button 
+          colorInitial="from-blue-400" 
+          colorFinale="to-blue-700"
+        >
+          {id ? "Alterar" : "Salvar"} {/*Se tiver id vai renderizar "Alterar" senão "Salvar"*/}
+        </Button>
+        <Button>
+          Cancelar
+        </Button>
+      </div>
+    </div>
+  )
+}
+```
+
+- Agora, vamos aplicar algumas classes de estilo para melhorar a parte visual:
+
+``` TSX
+import { useState } from "react";
+
+import Client from "../core/Client";
+import Input from "./Input";
+import Button from "./Button";
+
+interface FormProps {
+  client: Client
+}
+
+export default function Form(props: FormProps) {
+
+  const id = props.client?.id;
+  const [name, setName] = useState(props.client?.name ?? "");
+  const [age, setAge] = useState(props.client?.age ?? "");
+
+  return (
+    <div>
+      {id 
+        ? (<Input 
+            text="Código" 
+            value={id} 
+            readOnly 
+            className="mb-5"
+          />)
+        : (false)
+      }
+      <Input 
+        text="Nome" 
+        value={name} 
+        valueChanged={setName} 
+        className="mb-4"
+      />
+      <Input 
+        text="Idade" 
+        type={"number"} 
+        value={age} 
+        valueChanged={setAge} 
+      />
+
+      <div className="flex justify-end mt-7">
+        <Button 
+          colorInitial="from-blue-400" 
+          colorFinale="to-blue-700"
+        >
+          {id ? "Alterar" : "Salvar"} 
+        </Button>
+        <Button>
+          Cancelar
+        </Button>
+      </div>
+    </div>
+  )
+}
+```
+
+- Agora, em index.tsx e vamos passar a propriedade obrigatória(client) para o `Form` para visualizarmos em tela o código sendo renderizado:
+
+``` TSX
+import Button from "../components/Button";
+import Form from "../components/Form";
+import Layout from "../components/Layout";
+import Table from "../components/Table";
+
+import Client from "../core/Client";
+
+export default function Home() {
+
+  const clients = [
+    new Client("Ana Goez", 34, "1"),
+    new Client("Joana Gomes", 19, "2"),
+    new Client("Beatriz Mendes", 24, "3"),
+    new Client("João Garrido", 23, "4"),
+    new Client("Daniel Malfaia", 30, "5"),
+    new Client("Rafael Costa", 29, "6")
+  ];
+
+  function selectedClient(client: Client) {
+    console.log(`Editar ${client.name}`)
+  }
+
+  function excludedClient(client: Client) {
+    console.log(`Excluir ${client.name}`)
+  }
+
+  return (
+    <div className={`
+      flex h-screen justify-center items-center
+      bg-gradient-to-r from-purple-500 to-blue-600
+      text-white
+    `}>
+      <Layout title="Cadastro Simples">
+        <div className="flex justify-end">
+          <Button 
+            colorInitial="from-green-400" 
+            colorFinale="to-green-700"
+          >
+            Novo Cliente
+          </Button>
+        </div>
+        {/* <Table 
+          clients={clients} 
+          selectedClient={selectedClient} 
+          excludedClient={excludedClient} 
+        /> */}
+        <Form client={clients[0]} />
+      </Layout>
+    </div>
+  )
+}
+```
+
+## Alterando entre Tabela/Table` e Formulário/Form
+
