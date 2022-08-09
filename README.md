@@ -2569,7 +2569,7 @@ export default function Form(props: FormProps) {
 
   const id = props.client?.id;
   const [name, setName] = useState(props.client?.name ?? "");
-  const [age, setAge] = useState(props.client?.age ?? "");
+  const [age, setAge] = useState(props.client?.age ?? 0);
 
   return (
     <div>
@@ -2601,7 +2601,7 @@ export default function Form(props: FormProps) {
 
   const id = props.client?.id;
   const [name, setName] = useState(props.client?.name ?? "");
-  const [age, setAge] = useState(props.client?.age ?? "");
+  const [age, setAge] = useState(props.client?.age ?? 0);
 
   return (
     <div>
@@ -2628,7 +2628,7 @@ export default function Form(props: FormProps) {
 
   const id = props.client?.id;
   const [name, setName] = useState(props.client?.name ?? "");
-  const [age, setAge] = useState(props.client?.age ?? "");
+  const [age, setAge] = useState(props.client?.age ?? 0;
 
   return (
     <div>
@@ -2659,7 +2659,7 @@ export default function Form(props: FormProps) {
 
   const id = props.client?.id;
   const [name, setName] = useState(props.client?.name ?? "");
-  const [age, setAge] = useState(props.client?.age ?? "");
+  const [age, setAge] = useState(props.client?.age ?? 0);
 
   return (
     <div>
@@ -2755,7 +2755,7 @@ export default function Form(props: FormProps) {
 
   const id = props.client?.id;
   const [name, setName] = useState(props.client?.name ?? "");
-  const [age, setAge] = useState(props.client?.age ?? "");
+  const [age, setAge] = useState(props.client?.age ?? 0);
 
   return (
     <div>
@@ -2833,7 +2833,7 @@ export default function Form(props: FormProps) {
 
   const id = props.client?.id;
   const [name, setName] = useState(props.client?.name ?? "");
-  const [age, setAge] = useState(props.client?.age ?? "");
+  const [age, setAge] = useState(props.client?.age ?? 0);
 
   return (
     <div>
@@ -2927,7 +2927,7 @@ export default function Form(props: FormProps) {
 
   const id = props.client?.id;
   const [name, setName] = useState(props.client?.name ?? "");
-  const [age, setAge] = useState(props.client?.age ?? "");
+  const [age, setAge] = useState(props.client?.age ?? 0);
 
   return (
     <div>
@@ -2986,7 +2986,7 @@ export default function Form(props: FormProps) {
 
   const id = props.client?.id;
   const [name, setName] = useState(props.client?.name ?? "");
-  const [age, setAge] = useState(props.client?.age ?? "");
+  const [age, setAge] = useState(props.client?.age ?? 0);
 
   return (
     <div>
@@ -3086,3 +3086,464 @@ export default function Home() {
 
 ## Alterando entre Tabela/Table` e Formulário/Form
 
+- No `Home`, vamos criar um estado(com o hook `useState`) que irá chamar visível/`visible` e nele teremos dois possíveis estados `table` ou `form` e por padrão irá inicializar como `table`:
+
+``` TSX
+import { useState } from "react";
+
+import Button from "../components/Button";
+import Form from "../components/Form";
+import Layout from "../components/Layout";
+import Table from "../components/Table";
+
+import Client from "../core/Client";
+
+export default function Home() {
+
+  const clients = [
+    // [...]
+  ];
+
+  const [visible, setVisible] = useState<"table" | "form">("table");
+
+  function selectedClient(client: Client) {
+    // console.log(`Editar ${client.name}`)
+  }
+
+  function excludedClient(client: Client) {
+    // console.log(`Excluir ${client.name}`)
+  }
+
+  return (
+    <div className={`
+      flex h-screen justify-center items-center
+      bg-gradient-to-r from-purple-500 to-blue-600
+      text-white
+    `}>
+      <Layout title="Cadastro Simples">
+        <div className="flex justify-end">
+          <Button 
+            colorInitial="from-green-400" 
+            colorFinale="to-green-700"
+          >
+            Novo Cliente
+          </Button>
+        </div>
+        <Table 
+          clients={clients} 
+          selectedClient={selectedClient} 
+          excludedClient={excludedClient} 
+        />
+        <Form client={clients[0]} />
+      </Layout>
+    </div>
+  )
+}
+```
+
+- E agora, iremos fazer uma renderização condicional, se `visible` for igual/`===` a `table` então iremos renderizar a `div` do `Button` de inserir "Novo Cliente" e o componente `Table`, caso contrário(significa qie está definido `form`) iremos renderizar o componente `Form`:
+
+``` TSX
+import { useState } from "react";
+
+import Button from "../components/Button";
+import Form from "../components/Form";
+import Layout from "../components/Layout";
+import Table from "../components/Table";
+
+import Client from "../core/Client";
+
+export default function Home() {
+
+  const clients = [
+    // [...]
+  ];
+
+  const [visible, setVisible] = useState<"table" | "form">("table");
+
+  function selectedClient(client: Client) {
+    // console.log(`Editar ${client.name}`)
+  }
+
+  function excludedClient(client: Client) {
+    // console.log(`Excluir ${client.name}`)
+  }
+
+  return (
+    <div className={`
+      flex h-screen justify-center items-center
+      bg-gradient-to-r from-purple-500 to-blue-600
+      text-white
+    `}>
+      <Layout title="Cadastro Simples">
+        {visible === "table"
+          ? (<>
+              <div className="flex justify-end">
+                <Button 
+                  colorInitial="from-green-400" 
+                  colorFinale="to-green-700"
+                >
+                  Novo Cliente
+                </Button>
+              </div>
+              <Table 
+                clients={clients} 
+                selectedClient={selectedClient} 
+                excludedClient={excludedClient} 
+              />
+            </>)
+          : (<Form client={clients[0]} />)
+        }        
+      </Layout>
+    </div>
+  )
+}
+```
+
+- E para fazer esse alternância primeiramente, dentro do componente `Button` vamos definir que queremos receber a uma função via porps dentro do atributo `onClick` de forma opcional e em seguida dentro do elemento `button` vamos passar para o evento `onclick` a função que esperamos receber via props dentro do atributo `onClick`(`props.onClick`):
+
+``` TSX
+interface ButtonProps {
+  children: any
+  colorInitial?: "from-green-400" | "from-blue-400" | "from-gray-400"
+  colorFinale?: "to-green-700" | "to-blue-700" | "to-gray-700"
+  onClick?: () => void
+}
+
+export default function Button(props: ButtonProps) {
+
+  const colorInitial = props.colorInitial ?? "from-gray-400";
+  const colorFinale = props.colorFinale ?? "to-gray-700";
+
+  return (
+    <button 
+    onClick={props.onClick}
+    className={`
+      bg-gradient-to-r ${colorInitial} ${colorFinale}
+      text-white mb-4 mr-4 px-4 py-2 rounded-md 
+    `}>
+      {props.children}
+    </button>
+  )
+}
+```
+
+- Em seguida, voltando no componente principal `Home`, na referência ao componente `Button` vamos passar dentro do atributo `onClick` a função que seta a visibilidade/`setVisible` passando como valor `form`:
+
+``` TSX
+import { useState } from "react";
+
+import Button from "../components/Button";
+import Form from "../components/Form";
+import Layout from "../components/Layout";
+import Table from "../components/Table";
+
+import Client from "../core/Client";
+
+export default function Home() {
+
+  const clients = [
+    // [...]
+  ];
+
+  const [visible, setVisible] = useState<"table" | "form">("table");
+
+  function selectedClient(client: Client) {
+    // console.log(`Editar ${client.name}`)
+  }
+
+  function excludedClient(client: Client) {
+    // console.log(`Excluir ${client.name}`)
+  }
+
+  return (
+    <div className={`
+      flex h-screen justify-center items-center
+      bg-gradient-to-r from-purple-500 to-blue-600
+      text-white
+    `}>
+      <Layout title="Cadastro Simples">
+        {visible === "table"
+          ? (<>
+              <div className="flex justify-end">
+                <Button 
+                  colorInitial="from-green-400" 
+                  colorFinale="to-green-700"
+                  onClick={() => setVisible("form")}
+                >
+                  Novo Cliente
+                </Button>
+              </div>
+              <Table 
+                clients={clients} 
+                selectedClient={selectedClient} 
+                excludedClient={excludedClient} 
+              />
+            </>)
+          : (<Form client={clients[0]} />)
+        }        
+      </Layout>
+    </div>
+  )
+}
+```
+
+- Agora, quando clicamos no botão "Novo Cliente" vamos para o formulário e esperando que quando clicarmos em "Cancelar" volte a ser exibido a tabela.
+E para isso, dentro do componente `Form` vamos precisar receber os eventos quando o cliente for modificado, ou seja, quando clicar em "Alterar" ou "Salvar" e quando ele clicar em "Cancelar". 
+Então, iremos esperar receber essas funções dentro dos atributos cliente mudou/`clientChanged`(no caso do `clientChange` espera receber como parâmetro o client do tipo `Client`) e cancelado/`canceled`:
+
+``` TSX
+import { useState } from "react";
+
+import Client from "../core/Client";
+import Input from "./Input";
+import Button from "./Button";
+
+interface FormProps {
+  client: Client
+  cliendChanged?: (client: Client) => void
+  canceled?: () => void
+}
+
+export default function Form(props: FormProps) {
+
+  const id = props.client?.id;
+  const [name, setName] = useState(props.client?.name ?? "");
+  const [age, setAge] = useState(props.client?.age ?? 0);
+
+  return (
+    <div>
+      {id 
+        ? (<Input 
+            text="Código" 
+            value={id} 
+            readOnly 
+            className="mb-5"
+          />)
+        : (false)
+      }
+      <Input 
+        text="Nome" 
+        value={name} 
+        valueChanged={setName} 
+        className="mb-4"
+      />
+      <Input 
+        text="Idade" 
+        type={"number"} 
+        value={age} 
+        valueChanged={setAge} 
+      />
+
+      <div className="flex justify-end mt-7">
+        <Button 
+          colorInitial="from-blue-400" 
+          colorFinale="to-blue-700"
+        >
+          {id ? "Alterar" : "Salvar"} 
+        </Button>
+        <Button>
+          Cancelar
+        </Button>
+      </div>
+    </div>
+  )
+}
+```
+
+- E vamos passar essas funções que esperamos receber via props para o evento `onClick` dos `Button`:
+
+``` TSX
+import { useState } from "react";
+
+import Client from "../core/Client";
+import Input from "./Input";
+import Button from "./Button";
+
+interface FormProps {
+  client: Client
+  cliendChanged?: (client: Client) => void
+  canceled?: () => void
+}
+
+export default function Form(props: FormProps) {
+
+  const id = props.client?.id;
+  const [name, setName] = useState(props.client?.name ?? "");
+  const [age, setAge] = useState(props.client?.age ?? 0);
+
+  return (
+    <div>
+      {id 
+        ? (<Input 
+            text="Código" 
+            value={id} 
+            readOnly 
+            className="mb-5"
+          />)
+        : (false)
+      }
+      <Input 
+        text="Nome" 
+        value={name} 
+        valueChanged={setName} 
+        className="mb-4"
+      />
+      <Input 
+        text="Idade" 
+        type={"number"} 
+        value={age} 
+        valueChanged={setAge} 
+      />
+
+      <div className="flex justify-end mt-7">
+        <Button onClick={() => props.cliendChanged?.(new Client(name, +age, id))} // se cliendChanged tiver sido passado/exigir iremos invocar a função passando com parâmentro a instância Client` que recebe como parâmetro name, age e id 
+        // "+" na frente de age para garantir que o valor venha como tipo number
+          colorInitial="from-blue-400" 
+          colorFinale="to-blue-700"
+        >
+          {id ? "Alterar" : "Salvar"} 
+        </Button>
+        <Button onClick={props.canceled}>
+          Cancelar
+        </Button>
+      </div>
+    </div>
+  )
+}
+```
+
+- Agora, quando o evento `cliendChanged` for acionado ao "Salvar" ou "Alterar" ele já vai pegar o cliente modificado e isso significa que dentro do componente `Home` que contém a referência do componente `Form` podemos criar uma função para salvar o cliente/`saveClient` que irá receber um `client` do tipo `Cliente` e em seguida, podemos passar essa função como valor para o atributo `cliendChanged` do componente `Form`:
+
+``` TSX
+import { useState } from "react";
+
+import Button from "../components/Button";
+import Form from "../components/Form";
+import Layout from "../components/Layout";
+import Table from "../components/Table";
+
+import Client from "../core/Client";
+
+export default function Home() {
+
+  const clients = [
+    // [...]
+  ];
+
+  const [visible, setVisible] = useState<"table" | "form">("table");
+
+  function selectedClient(client: Client) {
+    // console.log(`Editar ${client.name}`)
+  }
+
+  function excludedClient(client: Client) {
+    // console.log(`Excluir ${client.name}`)
+  }
+
+  function saveClient(client: Client) {
+    console.log(client)
+  }
+
+  return (
+    <div className={`
+      flex h-screen justify-center items-center
+      bg-gradient-to-r from-purple-500 to-blue-600
+      text-white
+    `}>
+      <Layout title="Cadastro Simples">
+        {visible === "table"
+          ? (<>
+              <div className="flex justify-end">
+                <Button 
+                  colorInitial="from-green-400" 
+                  colorFinale="to-green-700"
+                  onClick={() => setVisible("form")}
+                >
+                  Novo Cliente
+                </Button>
+              </div>
+              <Table 
+                clients={clients} 
+                selectedClient={selectedClient} 
+                excludedClient={excludedClient} 
+              />
+            </>)
+          : (<Form 
+              client={clients[0]} 
+              cliendChanged={saveClient}
+            />)
+        }        
+      </Layout>
+    </div>
+  )
+}
+```
+
+- Além disso, para o atributo `canceled` de `form` vamos passar como valor a função que seta a visibilidade/`setVisible` passando como valor `table`(para voltar a renderização para a tabela):
+
+``` TSX
+import { useState } from "react";
+
+import Button from "../components/Button";
+import Form from "../components/Form";
+import Layout from "../components/Layout";
+import Table from "../components/Table";
+
+import Client from "../core/Client";
+
+export default function Home() {
+
+  const clients = [
+    // [...]
+  ];
+
+  const [visible, setVisible] = useState<"table" | "form">("table");
+
+  function selectedClient(client: Client) {
+    // console.log(`Editar ${client.name
+  }
+
+  function excludedClient(client: Client) {
+    // console.log(`Excluir ${client.name}`)
+  }
+
+  function saveClient(client: Client) {
+    console.log(client)
+  }
+
+  return (
+    <div className={`
+      flex h-screen justify-center items-center
+      bg-gradient-to-r from-purple-500 to-blue-600
+      text-white
+    `}>
+      <Layout title="Cadastro Simples">
+        {visible === "table"
+          ? (<>
+              <div className="flex justify-end">
+                <Button 
+                  colorInitial="from-green-400" 
+                  colorFinale="to-green-700"
+                  onClick={() => setVisible("form")}
+                >
+                  Novo Cliente
+                </Button>
+              </div>
+              <Table 
+                clients={clients} 
+                selectedClient={selectedClient} 
+                excludedClient={excludedClient} 
+              />
+            </>)
+          : (<Form 
+              client={clients[0]} 
+              cliendChanged={saveClient}
+              canceled={() => setVisible("table")}
+            />)
+        }        
+      </Layout>
+    </div>
+  )
+}
+```
