@@ -3831,3 +3831,59 @@ export default function Home() {
   )
 }
 ```
+
+## Configurando Firebase no Projeto
+
+- Na raiz do nosso projeto, vamos criar um arquivo chamado `.env.local` e nele iremos colocar algumas variáveis de ambiente nele, para não colocarmos essa variáveis sensíveis em arquivos que vão para o repositório do github;
+
+- Além disso, dentro de `src` vamos criar uma pasta chamada `backend` e dentro dela vamos criar um arquivo chamado `config.ts` e nele iremos configurar o firebase;
+
+- Vamos parar o nosso servidor e em seguida vamos instalar no projeto o firebase usando o comando a seguir:
+
+```
+npm install firebase
+    i
+```
+
+- Agora voltando no `firebase`(https://console.firebase.google.com/u/0/project/next-crud-236de/firestore/data/~2F?hl=pt-br) vamos precisar das informações que estão `Configurações do projeto`. 
+Vamos copiar as linhas `apiKey`, `authDomain` e `projectId`; e em seguida vamos colocar dentro do arquivo `.env.local`. Vamos transformar os nomes das variáveis para upercase e remover as aspas e colocar o simbolo de igual entre a chave e o valor:
+
+```
+API_KEY=[valor]
+AUTH_DOMAIN=[valor]
+PROJECT_ID=[valor]
+```
+
+- E especificamente em projetos `Next.js` as chaves devem iniciar com `NEXT_PUBLIC`, porque essa é a forma que conseguimos ter acesso a essas chaves dentro da aplicação web.
+Vamos acrescentar também `FIREBASE` ao nome para deixar claro que se essas chaves se tratam dele:
+
+``` 
+NEXT_PUBLIC_FIREBASE_API_KEY=AIzaSyBoP0AURXNZKRo14ukWuHGmMSzPUnGN9wE
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=next-crud-236de.firebaseapp.com
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=next-crud-236de
+```
+
+- Agora, podemos startar nosso projeto novamento:
+
+```
+npm run dev ou yarn run dev
+```
+
+- E agora vamos para o arquivo `config.ts` e nele iremos importar o `firebase` e o `firestore`;
+Em seguida, iremos fazer alguns testes. Se `firebase.apps.length` significa que já foi inicializado, então, caso `firebase.apps.length` não exista, e para isso vamos usar a negação na frente `!` iremos inicializar o `firebase` passando um objeto com os parâmetros `apiKey`, `authDomain` e `projectId` que são exatamente os três valores que temos dentro do arquivo `.env.local`.
+E no final, iremos exportar por padrão/`export default` o `firebase` que acabamos de inicializar:
+
+``` TS
+import firebase from "firebase";
+import "firebase/firestore";
+
+if (!firebase.apps.length) {
+  firebase.initializeApp({
+    apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+    authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID
+  })
+}
+
+export default firebase;
+```
