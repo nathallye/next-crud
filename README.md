@@ -3547,3 +3547,287 @@ export default function Home() {
   )
 }
 ```
+
+## Integrando Tabela/Table e Formulário/Form
+
+- Outra coisa que vamos fazer é quando o usuário clicar no `Button` para "alterar" ou "salvar" volte para a `Table` e para isso, em `index.tsx` na função que estamos passando para esse botão chamada `saveClient` vamos chamar a função `setVisible` passando como valor "table":
+
+``` TSX
+import { useState } from "react";
+
+// [...]
+
+import Client from "../core/Client";
+
+export default function Home() {
+
+  const clients = [
+    // [...]
+  ];
+
+  const [visible, setVisible] = useState<"table" | "form">("table");
+
+  function selectedClient(client: Client) {
+
+  }
+
+  function excludedClient(client: Client) {
+
+  }
+
+  function saveClient(client: Client) {
+    setVisible("table");
+  }
+
+  return (
+    <div className={`
+      flex h-screen justify-center items-center
+      bg-gradient-to-r from-purple-500 to-blue-600
+      text-white
+    `}>
+      <Layout title="Cadastro Simples">
+        {visible === "table"
+          ? (<>
+              <div className="flex justify-end">
+                <Button 
+                  colorInitial="from-green-400" 
+                  colorFinale="to-green-700"
+                  onClick={() => setVisible("form")}
+                >
+                  Novo Cliente
+                </Button>
+              </div>
+              <Table 
+                clients={clients} 
+                selectedClient={selectedClient} 
+                excludedClient={excludedClient} 
+              />
+            </>)
+          : (<Form 
+              client={clients[0]} 
+              cliendChanged={saveClient}
+              canceled={() => setVisible("table")}
+            />)
+        }        
+      </Layout>
+    </div>
+  )
+}
+```
+
+- Precisamos também criar um estado para armazenar o `client`.
+Para isso, vamos criar o estado `client` com o hook `useState` no qual iremos informar que esse estado é do tipo `Client` e seu valor inicial será uma instância vazia(`Client.empy`) que definimos dentro da class `Client`:
+
+``` TSX
+import { useState } from "react";
+
+// [...]
+
+import Client from "../core/Client";
+
+export default function Home() {
+
+  const clients = [
+    // [...]
+  ];
+
+  const [client, setClient] = useState<Client>(Client.empty());
+  const [visible, setVisible] = useState<"table" | "form">("table");
+
+  function selectedClient(client: Client) {
+
+  }
+
+  function excludedClient(client: Client) {
+
+  }
+
+  function saveClient(client: Client) {
+    setVisible("table");
+  }
+
+  return (
+    <div className={`
+      flex h-screen justify-center items-center
+      bg-gradient-to-r from-purple-500 to-blue-600
+      text-white
+    `}>
+      <Layout title="Cadastro Simples">
+        {visible === "table"
+          ? (<>
+              <div className="flex justify-end">
+                <Button 
+                  colorInitial="from-green-400" 
+                  colorFinale="to-green-700"
+                  onClick={() => setVisible("form")}
+                >
+                  Novo Cliente
+                </Button>
+              </div>
+              <Table 
+                clients={clients} 
+                selectedClient={selectedClient} 
+                excludedClient={excludedClient} 
+              />
+            </>)
+          : (<Form 
+              client={clients[0]} 
+              cliendChanged={saveClient}
+              canceled={() => setVisible("table")}
+            />)
+        }   
+      </Layout>
+    </div>
+  )
+}
+```
+
+- E esse `client` do estado significa que é examente o `client` selecionado, então ao invés de passarmos diretamente o objeto `clients` com a sua posição, vamos passar o estado `client`.
+E quando selecionarmos o cliente e a função `cliendChanged` for chamada, faz todo sentido chamarmos a função `setClient` passando o `client` recebido como parâmetro e em seguida para abrir o `form` vamos chamar o `setVisible` passando `form`:
+
+``` TSX
+import { useState } from "react";
+
+// [...]
+
+import Client from "../core/Client";
+
+export default function Home() {
+
+  const clients = [
+    // [...]
+  ];
+
+  const [client, setClient] = useState<Client>(Client.empty());
+  const [visible, setVisible] = useState<"table" | "form">("table");
+
+  function selectedClient(client: Client) {
+    setClient(client);
+    setVisible("form");
+
+  }
+
+  function excludedClient(client: Client) {
+   
+  }
+
+  function saveClient(client: Client) {
+    setVisible("table");
+  }
+
+  return (
+    <div className={`
+      flex h-screen justify-center items-center
+      bg-gradient-to-r from-purple-500 to-blue-600
+      text-white
+    `}>
+      <Layout title="Cadastro Simples">
+        {visible === "table"
+          ? (<>
+              <div className="flex justify-end">
+                <Button 
+                  colorInitial="from-green-400" 
+                  colorFinale="to-green-700"
+                  onClick={() => setVisible("form")}
+                >
+                  Novo Cliente
+                </Button>
+              </div>
+              <Table 
+                clients={clients} 
+                selectedClient={selectedClient} 
+                excludedClient={excludedClient} 
+              />
+            </>)
+          : (<Form 
+              client={client} 
+              cliendChanged={saveClient}
+              canceled={() => setVisible("table")}
+            />)
+        }        
+      </Layout>
+    </div>
+  )
+}
+```
+
+- E para evitar de quando formos criar um "Novo Cliente" ele puxe o último selecionado/editado, vamos criar uma função chamada `newClient` a qual irá setar o estado do cliente/`setClient` como vazio, passando a criação de uma instância de cliente vazia/`Client.empy` e em seguida setando a visiblidade/`setVisible` como formulário/`form`.
+Feito isso, vamos passar essa função `newClient` para ser chamada quando o evento `onClick` do `Button` "Novo Cliente" for acionado:
+
+``` TSX
+import { useState } from "react";
+
+import Button from "../components/Button";
+import Form from "../components/Form";
+import Layout from "../components/Layout";
+import Table from "../components/Table";
+
+import Client from "../core/Client";
+
+export default function Home() {
+
+  const clients = [
+    new Client("Ana Goez", 34, "1"),
+    new Client("Joana Gomes", 19, "2"),
+    new Client("Beatriz Mendes", 24, "3"),
+    new Client("João Garrido", 23, "4"),
+    new Client("Daniel Malfaia", 30, "5"),
+    new Client("Rafael Costa", 29, "6")
+  ];
+
+  const [client, setClient] = useState<Client>(Client.empty());
+  const [visible, setVisible] = useState<"table" | "form">("table");
+
+  function selectedClient(client: Client) {
+    setClient(client);
+    setVisible("form");
+  }
+
+  function excludedClient(client: Client) {
+    
+  }
+
+  function newClient() {
+    setClient(Client.empty());
+    setVisible("form");
+  }
+
+  function saveClient(client: Client) {
+    setVisible("table");
+  }
+
+  return (
+    <div className={`
+      flex h-screen justify-center items-center
+      bg-gradient-to-r from-purple-500 to-blue-600
+      text-white
+    `}>
+      <Layout title="Cadastro Simples">
+        {visible === "table"
+          ? (<>
+              <div className="flex justify-end">
+                <Button 
+                  colorInitial="from-green-400" 
+                  colorFinale="to-green-700"
+                  onClick={newClient}
+                >
+                  Novo Cliente
+                </Button>
+              </div>
+              <Table 
+                clients={clients} 
+                selectedClient={selectedClient} 
+                excludedClient={excludedClient} 
+              />
+            </>)
+          : (<Form 
+              client={client} 
+              cliendChanged={saveClient}
+              canceled={() => setVisible("table")}
+            />)
+        }        
+      </Layout>
+    </div>
+  )
+}
+```

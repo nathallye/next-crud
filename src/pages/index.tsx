@@ -18,18 +18,25 @@ export default function Home() {
     new Client("Rafael Costa", 29, "6")
   ];
 
+  const [client, setClient] = useState<Client>(Client.empty());
   const [visible, setVisible] = useState<"table" | "form">("table");
 
   function selectedClient(client: Client) {
-    console.log(`Editar ${client.name}`)
+    setClient(client);
+    setVisible("form");
   }
 
   function excludedClient(client: Client) {
-    console.log(`Excluir ${client.name}`)
+    
+  }
+
+  function newClient() {
+    setClient(Client.empty());
+    setVisible("form");
   }
 
   function saveClient(client: Client) {
-    console.log(client)
+    setVisible("table");
   }
 
   return (
@@ -45,7 +52,7 @@ export default function Home() {
                 <Button 
                   colorInitial="from-green-400" 
                   colorFinale="to-green-700"
-                  onClick={() => setVisible("form")}
+                  onClick={newClient}
                 >
                   Novo Cliente
                 </Button>
@@ -57,7 +64,7 @@ export default function Home() {
               />
             </>)
           : (<Form 
-              client={clients[0]} 
+              client={client} 
               cliendChanged={saveClient}
               canceled={() => setVisible("table")}
             />)
