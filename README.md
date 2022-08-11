@@ -3887,3 +3887,331 @@ if (!firebase.apps.length) {
 
 export default firebase;
 ```
+
+## Repositório de Clientes/Clients
+
+- Dentro de `src/core` iremos criar um arquivo chamado cliente repositório/`ClientRepository.ts` e esse arquivo vai ser uma `interface` do TypeScript.
+Então dentro do arquivo iremos exportar por padrão/`export default` a `interface` chamada `ClientRepository` e essa interface terá três métodos(salvar/`save`, excluir/`delete` e o obterTodos/`getAll`):
+
+``` TS
+import Client from "./Client";
+
+export default interface ClientRepository {
+  save(client: Client): Promise<Client> // esse método espera receber um client do tipo Client e retorna uma promise do tipo Client
+  delete(client: Client): Promise<void> // esse método espera receber um client do tipo Client e retorna uma promise vazia
+  getAll(): Promise<Client[]> // esse método  não espera receber nada e retorna uma promise do tipo Client, que na verdade é um array/lista de clientes
+}
+```
+
+- Agora, dentro de `src/backend` vamos criar uma pasta chamada `database` or `db` e nela podemos criação um arquivo coleção de clientes/`CollectionClients.ts` esse arquivo vai ser uma classe.
+Então dentro do arquivo iremos exportar por padrão/`export default` a `class` chamada `ColletionClients` e essa classe vai implementar/`implements` a interface `ClientRepository`:
+
+``` TS
+import ClientRepository from "../../core/ClientRepository";
+
+export default class CollectionClients implements ClientRepository {
+  
+}
+```
+
+- E agora iremos implementar os três métodos que essa `interface` exige:
+
+``` TS
+import Client from "../../core/Client";
+import ClientRepository from "../../core/ClientRepository";
+
+export default class CollectionClients implements ClientRepository {
+  
+  async save(client: Client): Promise<Client> {
+    return null;
+  }
+
+  async delete(client: Client): Promise<void> {
+    return null;
+  }
+
+  async getAll(): Promise<Client[]> {
+    return null;
+  }
+}
+```
+
+- Agora, vamos importar o `firebase` de dentro do nosso arquivo `config`.
+Exite dentro do `firebase` temos o `conversor`, ele é um objeto que contém dois métodos e um dos métodos é o `toFirestore` e esse método vai receber um `client` do tipo da classe `Client` e vai devolver um objeto apto para ser persistido no `firestore`. Porque o nosso `client` é uma classe e por padrão essa classe não vai ser convertida automáticamente em JSON, então quando quisermos converter esse `client` para o `firestore` precisamos retornar/`return` um objeto com os dados que queremos converter:
+
+``` TS
+import firebase from "../config";
+
+import Client from "../../core/Client";
+import ClientRepository from "../../core/ClientRepository";
+
+export default class CollectionClients implements ClientRepository {
+
+  conversor = {
+    toFirestore(client: Client) {
+      return  {
+        name: client.name,
+        age: client.age
+      }
+    }
+  }
+  
+  async save(client: Client): Promise<Client> {
+    return null;
+  }
+
+  async delete(client: Client): Promise<void> {
+    return null;
+  }
+
+  async getAll(): Promise<Client[]> {
+    return null;
+  }
+}
+```
+
+- E o outro método desse objeto é o `fromFirestore`, esse método vai devolver um `snapshot` e o `options`:
+
+``` TS
+import firebase from "../config";
+
+import Client from "../../core/Client";
+import ClientRepository from "../../core/ClientRepository";
+
+export default class CollectionClients implements ClientRepository {
+
+  conversor = {
+    toFirestore(client: Client) {
+      return  {
+        name: client.name,
+        age: client.age
+      }
+    },
+    fromFirestore(snapshot, options) {
+      
+    }
+  }
+  
+  async save(client: Client): Promise<Client> {
+    return null;
+  }
+
+  async delete(client: Client): Promise<void> {
+    return null;
+  }
+
+  async getAll(): Promise<Client[]> {
+    return null;
+  }
+}
+```
+
+- Podemos também especificar os tipos de `snapshot` e `options`: 
+
+``` TS
+import firebase from "../config";
+
+import Client from "../../core/Client";
+import ClientRepository from "../../core/ClientRepository";
+
+export default class CollectionClients implements ClientRepository {
+
+  conversor = {
+    toFirestore(client: Client) {
+      return  {
+        name: client.name,
+        age: client.age
+      }
+    },
+    fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOPtions) {
+
+    }
+  }
+  
+  async save(client: Client): Promise<Client> {
+    return null;
+  }
+
+  async delete(client: Client): Promise<void> {
+    return null;
+  }
+
+  async getAll(): Promise<Client[]> {
+    return null;
+  }
+}
+```
+
+- Esse são os dois tipos que recebemos do `fromFirebase`, ou seja, estamos recebendo os dados do `firebase` e queremos retornar um cliente, ou seja, a resposta dessa função vai retornar um objeto do tipo `Client`:
+
+``` TS
+import firebase from "../config";
+
+import Client from "../../core/Client";
+import ClientRepository from "../../core/ClientRepository";
+
+export default class CollectionClients implements ClientRepository {
+
+  conversor = {
+    toFirestore(client: Client) {
+      return  {
+        name: client.name,
+        age: client.age
+      }
+    },
+    fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOPtions): Client {
+
+    }
+  }
+  
+  async save(client: Client): Promise<Client> {
+    return null;
+  }
+
+  async delete(client: Client): Promise<void> {
+    return null;
+  }
+
+  async getAll(): Promise<Client[]> {
+    return null;
+  }
+}
+```
+
+- Então dentro dessa função `fromFirestore` devemos retornar algo.
+E para isso, vamos criar uma constante chamada dados/`data` que irá receber os dados a partir de `snapshot.data` e vamos passar `options` como parâmetro; E para retornar/`return` vamos criar uma nova instância de `Client` passando as informações a partir do que recebemos na const `data`(data.name, data.age), somente o `id` que vamos pegar a partir do `snapshot`(snapshot.id), porque o id foi gerado pelo próprio firebase:
+
+``` TS
+import firebase from "../config";
+
+import Client from "../../core/Client";
+import ClientRepository from "../../core/ClientRepository";
+
+export default class CollectionClients implements ClientRepository {
+
+  conversor = {
+    toFirestore(client: Client) {
+      return  {
+        name: client.name,
+        age: client.age
+      }
+    },
+    fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOPtions): Client {
+      const data = snapshot.data(options);
+      return new Client(data.name, data.age, snapshot.id);
+    }
+  }
+  
+  async save(client: Client): Promise<Client> {
+    return null;
+  }
+
+  async delete(client: Client): Promise<void> {
+    return null;
+  }
+
+  async getAll(): Promise<Client[]> {
+    return null;
+  }
+}
+```
+
+- Então, basicamente esse `conversor` que pode inclusive ser privado(colocando o `#` na frente), em `toFirestore`(paraFirestore) ele vai converter uma classe(`Client`) para algo que vai ser persistido no `firestore` e em `fromFirestore`(deFirestore) vamos receber algo do `firestore` e vamos converter para a nossa classe. 
+Agora não precisamos mais nos preocupar em fazer isso dentro dos métodos/funções `save`, `delete` e `getAll`(veremos mais a frente como fazer);
+
+
+- Iremos criar também uma coleção/`collection` que será um método privado e esse método vai retornar a coleção de clientes/`clients` que vamos pegar a partir do `firebase` usando os métodos `firestore().collection("clients")` e "em cima" da coleção retornada vamos aplicar o método `withConverter` passando como parâmetro o `conversor` que criamos acima(`withConverter(this.#conversor)`) para converter a coleção de acordo com o que foi definido no conversor:
+
+``` TS
+import firebase from "../config";
+
+import Client from "../../core/Client";
+import ClientRepository from "../../core/ClientRepository";
+
+export default class CollectionClients implements ClientRepository {
+
+  #conversor = {
+    toFirestore(client: Client) {
+      return  {
+        name: client.name,
+        age: client.age
+      }
+    },
+    fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOPtions): Client {
+      const data = snapshot.data(options);
+      return new Client(data.name, data.age, snapshot.id);
+    }
+  }
+  
+  async save(client: Client): Promise<Client> {
+    return null;
+  }
+
+  async delete(client: Client): Promise<void> {
+    return null;
+  }
+
+  async getAll(): Promise<Client[]> {
+    return null;
+  }
+
+  #collection() {
+    return firebase
+      .firestore().collection("clients")
+      .withConverter(this.#conversor);
+  }
+}
+```
+
+- E agora, para cada um dos métodos `save`, `delete` e `getAll` vamos usar essa `collection` e "em cima" dela vamos fazer o salvar, excluir, listar todos:
+
+``` TS
+import firebase from "../config";
+
+import Client from "../../core/Client";
+import ClientRepository from "../../core/ClientRepository";
+
+export default class CollectionClients implements ClientRepository {
+
+  #conversor = {
+    toFirestore(client: Client) {
+      return  {
+        name: client.name,
+        age: client.age
+      }
+    },
+    fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOPtions): Client {
+      const data = snapshot.data(options);
+      return new Client(data.name, data.age, snapshot.id);
+    }
+  }
+  
+  async save(client: Client): Promise<Client> {
+    // para salvar, termos dois cenários:
+    if(client?.id) { // primeiro, se o client.id estiver setado significa que vamos alterar
+      // await, pois vai ser de forma assíncrona
+      await this.#collection().doc(client.id).set(client); // então para alterar, dentro da coleção de clientes, conseguimos acessar um cliente específico que é um documento/doc a partir do id dele(client.id) e em seguida, após acessar o cliente em questão podemos chamar o método set para setar as alterações
+      return client; // se der tudo certo, vamos retornar o client com as alterações
+    } else { // caso contrário, se o id não estiver setado significa que vamos salvar
+      const docRef = this.#collection().add(client) // o método add retorna uma Promise de um DocumentReference, e como queremos pegá-lo vamos colocar um await e armazenar na constante docRef 
+      const doc = await docRef.get(); // o método get retorna uma Promise de um DocumentSnapshop, e como queremos pegá-lo vamos colocar um await e armazenar na constante doc
+      return doc.data(); // e apartir do doc utilizando o método data conseguimos pegar o cliente 
+    }
+  }
+
+  async delete(client: Client): Promise<void> {
+    return this.#collection().doc(client.id).delete(); // dentro da coleção de clientes, conseguimos acessar um cliente específico que é um documento/doc a partir do id dele(client.id) e em seguida, após acessar p cliente em questão podemos chamar o método delete
+  }
+
+  async getAll(): Promise<Client[]> {
+    const query = await this.#collection().get() // esse método retorna uma Promise de um QuerySnapshot, e como queremos pegá-lo vamos colocar um await e armazenar na constante query 
+    return query.docs.map(doc => doc.data()) ?? []; // e apartir de query vamos ter acesso aos documentos
+  }
+
+  #collection() {
+    return firebase
+      .firestore().collection("clients")
+      .withConverter(this.#conversor);
+  }
+}
+```
