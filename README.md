@@ -4717,3 +4717,493 @@ export default function Home() {
   )
 }
 ```
+
+## Organizando Código com Hooks(https://pt-br.reactjs.org/docs/hooks-custom.html)
+
+- Em `src` vamos criar uma pasta chamada `hooks`, dentro desse repositório vamos criar um hook chamado `useClients.ts` e nesse hook vamos criar uma função com o mesmo nome e exportá-lo por padrão/`export default`:
+
+``` TS
+export default function useClients() {
+  
+}
+```
+
+- E dentro desse hook vamos colocar toda a parte de crição de constantes, estado e funções do nosso app que se entro dentro de `index.tsx`:
+
+``` TS
+import { useEffect, useState } from "react";
+import CollectionClients from "../backend/db/CollectionClients";
+
+import Client from "../core/Client";
+import ClientRepository from "../core/ClientRepository";
+
+
+export default function useClients() {
+  const repo: ClientRepository = new CollectionClients();
+
+  const [client, setClient] = useState<Client>(Client.empty());
+  const [clients, setClients] = useState<Client[]>([]);
+  const [visible, setVisible] = useState<"table" | "form">("table");
+
+  useEffect(getAll, []);
+
+  function getAll() {
+    repo.getAll().then(clients => {
+      setClients(clients);
+      setVisible("table");
+    });
+  }
+
+  function selectedClient(client: Client) {
+    setClient(client);
+    setVisible("form");
+  }
+
+  async function excludedClient(client: Client) {
+    await repo.delete(client);
+    getAll();
+  }
+
+  function newClient() {
+    setClient(Client.empty());
+    setVisible("form");
+  }
+
+  async function saveClient(client: Client) {
+    await repo.save(client);
+    getAll();
+  }
+}
+```
+
+- Em seguida, vamos exportar/retornar(`return`) tudo que criamos dentro de hook e queremos acessar no componente `Home`(index.tsx):
+
+``` TS
+import { useEffect, useState } from "react";
+import CollectionClients from "../backend/db/CollectionClients";
+
+import Client from "../core/Client";
+import ClientRepository from "../core/ClientRepository";
+
+
+export default function useClients() {
+  const repo: ClientRepository = new CollectionClients();
+
+  const [client, setClient] = useState<Client>(Client.empty());
+  const [clients, setClients] = useState<Client[]>([]);
+  const [visible, setVisible] = useState<"table" | "form">("table");
+
+  useEffect(getAll, []);
+
+  function getAll() {
+    repo.getAll().then(clients => {
+      setClients(clients);
+      setVisible("table");
+    });
+  }
+
+  function selectedClient(client: Client) {
+    setClient(client);
+    setVisible("form");
+  }
+
+  async function excludedClient(client: Client) {
+    await repo.delete(client);
+    getAll();
+  }
+
+  function newClient() {
+    setClient(Client.empty());
+    setVisible("form");
+  }
+
+  async function saveClient(client: Client) {
+    await repo.save(client);
+    getAll();
+  }
+
+  return {
+    client,
+    clients,
+    newClient,
+    saveClient,
+    excludedClient,
+    selectedClient
+  }
+}
+```
+
+- Agora, dentro de `index.tsx` vamos usar esse hook que criamos `useClients` e colocar o que ele vai retornar dentro de uma constante e em seguida ele já vai reconhecer novamente esses dados passados:
+
+``` TSX
+import Button from "../components/Button";
+import Form from "../components/Form";
+import Layout from "../components/Layout";
+import Table from "../components/Table";
+
+import useClients from "../hooks/useClients";
+
+export default function Home() {
+
+  const { 
+    client,
+    clients,
+    newClient,
+    saveClient,
+    excludedClient,
+    selectedClient
+  } = useClients();
+
+  return (
+    <div className={`
+      flex h-screen justify-center items-center
+      bg-gradient-to-r from-purple-500 to-blue-600
+      text-white
+    `}>
+      <Layout title="Cadastro Simples">
+        {visible === "table"
+          ? (<>
+              <div className="flex justify-end">
+                <Button 
+                  colorInitial="from-green-400" 
+                  colorFinale="to-green-700"
+                  onClick={newClient}
+                >
+                  Novo Cliente
+                </Button>
+              </div>
+              <Table 
+                clients={clients} 
+                selectedClient={selectedClient} 
+                excludedClient={excludedClient} 
+              />
+            </>)
+          : (<Form 
+              client={client} 
+              cliendChanged={saveClient}
+              canceled={() => setVisible("table")}
+            />)
+        }        
+      </Layout>
+    </div>
+  )
+}
+```
+
+- Agora, só ficou faltando resolver a questão da visibilidade(`visible` e `setVisible`). E para isso, iremos criar um outro hook chamado `useTableOrForm.ts` e nesse hook vamos criar uma função com o mesmo nome e exportá-lo por padrão/`export default`:
+
+``` TS
+export default function useTableOrForm() {
+  
+}
+```
+
+- E dentro vamos criar um estado para `visible` com o hook `useState`:
+
+``` TS
+import { useState } from "react";
+
+export default function useTableOrForm() {
+  const [visible, setVisible] = useState<"table" | "form">("table");
+}
+```
+
+- E no final vamos retornar esse estado, só que não de forma direta, vamos retornar de uma forma mais "detalhada"(isolando uma lógica da aplicação dentro do hook):
+
+``` TS
+import { useState } from "react";
+
+export default function useTableOrForm() {
+  const [visible, setVisible] = useState<"table" | "form">("table");
+
+  return {
+    formVisible: visible === "form",
+    tableVisible: visible === "table"
+  }
+}
+```
+
+- E vamos criar duas funções para alterar esse estado:
+
+``` TS
+import { useState } from "react";
+
+export default function useTableOrForm() {
+  const [visible, setVisible] = useState<"table" | "form">("table");
+
+  const showTable = () => setVisible("table");
+  const showForm = () => setVisible("form");
+
+  return {
+    formVisible: visible === "form",
+    tableVisible: visible === "table"
+  }
+}
+```
+
+- Em seguida, vamos returnar essas duas funções que criamos, também:
+
+``` TS
+import { useState } from "react";
+
+export default function useTableOrForm() {
+  const [visible, setVisible] = useState<"table" | "form">("table");
+
+  const showTable = () => setVisible("table");
+  const showForm = () => setVisible("form");
+
+  return {
+    formVisible: visible === "form",
+    tableVisible: visible === "table",
+    showTable,
+    showForm
+  }
+}
+```
+
+- E agora, dentro do hook `useClients` vamos remover a criação do estado de `visible` e vamos importar esse hook `useTableOrForm`:
+
+``` TS
+import { useEffect, useState } from "react";
+import CollectionClients from "../backend/db/CollectionClients";
+
+import Client from "../core/Client";
+import ClientRepository from "../core/ClientRepository";
+import useTableOrForm from "./useTableOrForm";
+
+
+export default function useClients() {
+  const repo: ClientRepository = new CollectionClients();
+
+  const { 
+    tableVisible, formVisible, showTable, showForm
+  } = useTableOrForm();
+
+  const [client, setClient] = useState<Client>(Client.empty());
+  const [clients, setClients] = useState<Client[]>([]);
+
+  useEffect(getAll, []);
+
+  function getAll() {
+    repo.getAll().then(clients => {
+      setClients(clients);
+      setVisible("table");
+    });
+  }
+
+  function selectedClient(client: Client) {
+    setClient(client);
+    setVisible("form");
+  }
+
+  async function excludedClient(client: Client) {
+    await repo.delete(client);
+    getAll();
+  }
+
+  function newClient() {
+    setClient(Client.empty());
+    setVisible("form");
+  }
+
+  async function saveClient(client: Client) {
+    await repo.save(client);
+    getAll();
+  }
+
+  return {
+    client,
+    clients,
+    newClient,
+    saveClient,
+    excludedClient,
+    selectedClient
+  }
+}
+```
+
+- E ao invés de setarmos o estado chamando `setVisible` e passando se é `table` ou `form` vamos chamar as funções criadas:
+
+``` TS
+import { useEffect, useState } from "react";
+import CollectionClients from "../backend/db/CollectionClients";
+
+import Client from "../core/Client";
+import ClientRepository from "../core/ClientRepository";
+import useTableOrForm from "./useTableOrForm";
+
+
+export default function useClients() {
+  const repo: ClientRepository = new CollectionClients();
+
+  const { 
+    tableVisible, formVisible, showTable, showForm
+  } = useTableOrForm();
+
+  const [client, setClient] = useState<Client>(Client.empty());
+  const [clients, setClients] = useState<Client[]>([]);
+
+  useEffect(getAll, []);
+
+  function getAll() {
+    repo.getAll().then(clients => {
+      setClients(clients);
+      // setVisible("table");
+      showTable();
+    });
+  }
+
+  function selectedClient(client: Client) {
+    setClient(client);
+    // setVisible("form");
+    showForm();
+  }
+
+  async function excludedClient(client: Client) {
+    await repo.delete(client);
+    getAll();
+  }
+
+  function newClient() {
+    setClient(Client.empty());
+    // setVisible("form");
+    showForm();
+  }
+
+  async function saveClient(client: Client) {
+    await repo.save(client);
+    getAll();
+  }
+
+  return {
+    client,
+    clients,
+    newClient,
+    saveClient,
+    excludedClient,
+    selectedClient
+  }
+}
+```
+
+- E por fim, vamos retornar a lógica e a função que precisamos(`tableVisible` e `showTable`) usar dentro do componente `Home`:
+
+``` TS
+import { useEffect, useState } from "react";
+import CollectionClients from "../backend/db/CollectionClients";
+
+import Client from "../core/Client";
+import ClientRepository from "../core/ClientRepository";
+import useTableOrForm from "./useTableOrForm";
+
+
+export default function useClients() {
+  const repo: ClientRepository = new CollectionClients();
+
+  const { 
+    tableVisible, formVisible, showTable, showForm
+  } = useTableOrForm();
+
+  const [client, setClient] = useState<Client>(Client.empty());
+  const [clients, setClients] = useState<Client[]>([]);
+
+  useEffect(getAll, []);
+
+  function getAll() {
+    repo.getAll().then(clients => {
+      setClients(clients);
+      showTable();
+    });
+  }
+
+  function selectedClient(client: Client) {
+    setClient(client);
+    showForm();
+  }
+
+  async function excludedClient(client: Client) {
+    await repo.delete(client);
+    getAll();
+  }
+
+  function newClient() {
+    setClient(Client.empty());
+    showForm();
+  }
+
+  async function saveClient(client: Client) {
+    await repo.save(client);
+    getAll();
+  }
+
+  return {
+    client,
+    clients,
+    newClient,
+    saveClient,
+    excludedClient,
+    selectedClient,
+    tableVisible,
+    showTable
+  }
+}
+```
+
+- Retornando essa lógica e essa função, dentro do componente `Home` podemos obte-las de dentro do hook `useClients` e em seguida fazer as verificações necessárias a partir dessas propriedades:
+
+``` TSX
+import Button from "../components/Button";
+import Form from "../components/Form";
+import Layout from "../components/Layout";
+import Table from "../components/Table";
+
+import useClients from "../hooks/useClients";
+
+export default function Home() {
+
+  const { 
+    client,
+    clients,
+    newClient,
+    saveClient,
+    excludedClient,
+    selectedClient,
+    tableVisible,
+    showTable
+  } = useClients();
+
+  return (
+    <div className={`
+      flex h-screen justify-center items-center
+      bg-gradient-to-r from-purple-500 to-blue-600
+      text-white
+    `}>
+      <Layout title="Cadastro Simples">
+        {/*visible === "table"*/ tableVisible
+          ? (<>
+              <div className="flex justify-end">
+                <Button 
+                  colorInitial="from-green-400" 
+                  colorFinale="to-green-700"
+                  onClick={newClient}
+                >
+                  Novo Cliente
+                </Button>
+              </div>
+              <Table 
+                clients={clients} 
+                selectedClient={selectedClient} 
+                excludedClient={excludedClient} 
+              />
+            </>)
+          : (<Form 
+              client={client} 
+              cliendChanged={saveClient}
+              canceled={() => /*setVisible("table")*/ showTable}
+            />)
+        }        
+      </Layout>
+    </div>
+  )
+}
+```
