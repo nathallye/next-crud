@@ -1,5 +1,9 @@
 # Projeto CRUD com Next.js
 
+Projeto Cadastro com Next.js e Integração com o Firebase; 
+
+![next-crud](https://user-images.githubusercontent.com/86172286/184454173-3e94a242-8e6f-4a5a-886d-49017d89c06f.jpg)
+
 ## Criando o projeto CRUD com Next.js
 
 - Dentro da pasta do projeto, vamos rodar o comando(mais recomendado atualmente usar o npx):
