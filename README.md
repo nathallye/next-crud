@@ -56,7 +56,7 @@ yarn dev ou npm run dev
 
 - Vamos criar também a pasta `components` dentro de `src`;
 
-## Configurações Firebase
+## Configurações Firebase(Versão 8.8.0)
 
 Inicialmente vamos criar o projeto no Firebase para realizarmos a integração na aplicação mais a frente.
 
@@ -4193,7 +4193,7 @@ export default class CollectionClients implements ClientRepository {
       await this.#collection().doc(client.id).set(client); // então para alterar, dentro da coleção de clientes, conseguimos acessar um cliente específico que é um documento/doc a partir do id dele(client.id) e em seguida, após acessar o cliente em questão podemos chamar o método set para setar as alterações
       return client; // se der tudo certo, vamos retornar o client com as alterações
     } else { // caso contrário, se o id não estiver setado significa que vamos salvar
-      const docRef = this.#collection().add(client) // o método add retorna uma Promise de um DocumentReference, e como queremos pegá-lo vamos colocar um await e armazenar na constante docRef 
+      const docRef = await this.#collection().add(client) // o método add retorna uma Promise de um DocumentReference, e como queremos pegá-lo vamos colocar um await e armazenar na constante docRef 
       const doc = await docRef.get(); // o método get retorna uma Promise de um DocumentSnapshop, e como queremos pegá-lo vamos colocar um await e armazenar na constante doc
       return doc.data(); // e apartir do doc utilizando o método data conseguimos pegar o cliente 
     }
@@ -4213,5 +4213,507 @@ export default class CollectionClients implements ClientRepository {
       .firestore().collection("clients")
       .withConverter(this.#conversor);
   }
+}
+```
+
+## Integrando Cadastro com Firebase
+
+- Dentro de `index.tsx` vamos criar uma repositório/`repo` que vai ser do tipo `ClientRepository` e nele iremos instânciar uma `CollectionClients`:
+
+``` TSX
+import { useState } from "react";
+import CollectionClients from "../backend/db/CollectionClients";
+
+import Button from "../components/Button";
+import Form from "../components/Form";
+import Layout from "../components/Layout";
+import Table from "../components/Table";
+
+import Client from "../core/Client";
+import ClientRepository from "../core/ClientRepository";
+
+export default function Home() {
+
+  const clients = [
+    new Client("Ana Goez", 34, "1"),
+    new Client("Joana Gomes", 19, "2"),
+    new Client("Beatriz Mendes", 24, "3"),
+    new Client("João Garrido", 23, "4"),
+    new Client("Daniel Malfaia", 30, "5"),
+    new Client("Rafael Costa", 29, "6")
+  ];
+
+  const repo: ClientRepository = new CollectionClients();
+
+  const [client, setClient] = useState<Client>(Client.empty());
+  const [visible, setVisible] = useState<"table" | "form">("table");
+
+  function selectedClient(client: Client) {
+    setClient(client);
+    setVisible("form");
+  }
+
+  function excludedClient(client: Client) {
+    
+  }
+
+  function newClient() {
+    setClient(Client.empty());
+    setVisible("form");
+  }
+
+  function saveClient(client: Client) {
+    setVisible("table");
+  }
+
+  return (
+    <div className={`
+      flex h-screen justify-center items-center
+      bg-gradient-to-r from-purple-500 to-blue-600
+      text-white
+    `}>
+      <Layout title="Cadastro Simples">
+        {visible === "table"
+          ? (<>
+              <div className="flex justify-end">
+                <Button 
+                  colorInitial="from-green-400" 
+                  colorFinale="to-green-700"
+                  onClick={newClient}
+                >
+                  Novo Cliente
+                </Button>
+              </div>
+              <Table 
+                clients={clients} 
+                selectedClient={selectedClient} 
+                excludedClient={excludedClient} 
+              />
+            </>)
+          : (<Form 
+              client={client} 
+              cliendChanged={saveClient}
+              canceled={() => setVisible("table")}
+            />)
+        }        
+      </Layout>
+    </div>
+  )
+}
+```
+
+- E a partir desse `repo` podemos obter a lista de clientes, então ao invés de termos os clientes/`clients` dentro de uma constante podemos criar um estado da lista de clientes/`clients` com o hook `useState` o qual esse estado será do tipo `Client[]` e irá receber como valor inicial um array vazio:
+
+``` TSX
+import { useState } from "react";
+import CollectionClients from "../backend/db/CollectionClients";
+
+import Button from "../components/Button";
+import Form from "../components/Form";
+import Layout from "../components/Layout";
+import Table from "../components/Table";
+
+import Client from "../core/Client";
+import ClientRepository from "../core/ClientRepository";
+
+export default function Home() {
+
+  const repo: ClientRepository = new CollectionClients();
+
+  const [client, setClient] = useState<Client>(Client.empty());
+  const [clients, setClients] = useState<Client[]>([]);
+  const [visible, setVisible] = useState<"table" | "form">("table");
+
+  function selectedClient(client: Client) {
+    setClient(client);
+    setVisible("form");
+  }
+
+  function excludedClient(client: Client) {
+    
+  }
+
+  function newClient() {
+    setClient(Client.empty());
+    setVisible("form");
+  }
+
+  function saveClient(client: Client) {
+    setVisible("table");
+  }
+
+  return (
+    <div className={`
+      flex h-screen justify-center items-center
+      bg-gradient-to-r from-purple-500 to-blue-600
+      text-white
+    `}>
+      <Layout title="Cadastro Simples">
+        {visible === "table"
+          ? (<>
+              <div className="flex justify-end">
+                <Button 
+                  colorInitial="from-green-400" 
+                  colorFinale="to-green-700"
+                  onClick={newClient}
+                >
+                  Novo Cliente
+                </Button>
+              </div>
+              <Table 
+                clients={clients} 
+                selectedClient={selectedClient} 
+                excludedClient={excludedClient} 
+              />
+            </>)
+          : (<Form 
+              client={client} 
+              cliendChanged={saveClient}
+              canceled={() => setVisible("table")}
+            />)
+        }        
+      </Layout>
+    </div>
+  )
+}
+```
+
+- Em seguida, vamos usar um `useEffect` para alterar o estado na inicialização do nosso componente, para isso vamos pegar `repo` e chamar o método obter todos/`getAll`(que configuramos dentro de `CollectionClients` e o repo herdou esses métodos ao criar uma instância dessa classe) e quando recebermos essa coleção de clientes, ele vai retornar uma promesa/`Promise` e vamos chamar um `then` para receber os clientes dessa Promise e vamos passar o `setClients` para quando ele terminar de obter todos os clientes essa lista seja setada no estado:
+
+``` TSX
+import { useEffect, useState } from "react";
+import CollectionClients from "../backend/db/CollectionClients";
+
+import Button from "../components/Button";
+import Form from "../components/Form";
+import Layout from "../components/Layout";
+import Table from "../components/Table";
+
+import Client from "../core/Client";
+import ClientRepository from "../core/ClientRepository";
+
+export default function Home() {
+
+  const repo: ClientRepository = new CollectionClients();
+
+  const [client, setClient] = useState<Client>(Client.empty());
+  const [clients, setClients] = useState<Client[]>([]);
+  const [visible, setVisible] = useState<"table" | "form">("table");
+
+  useEffect(() => {
+    repo.getAll().then(setClients);
+  }, []) 
+
+  function selectedClient(client: Client) {
+    setClient(client);
+    setVisible("form");
+  }
+
+  function excludedClient(client: Client) {
+    
+  }
+
+  function newClient() {
+    setClient(Client.empty());
+    setVisible("form");
+  }
+
+  function saveClient(client: Client) {
+    setVisible("table");
+  }
+
+  return (
+    <div className={`
+      flex h-screen justify-center items-center
+      bg-gradient-to-r from-purple-500 to-blue-600
+      text-white
+    `}>
+      <Layout title="Cadastro Simples">
+        {visible === "table"
+          ? (<>
+              <div className="flex justify-end">
+                <Button 
+                  colorInitial="from-green-400" 
+                  colorFinale="to-green-700"
+                  onClick={newClient}
+                >
+                  Novo Cliente
+                </Button>
+              </div>
+              <Table 
+                clients={clients} 
+                selectedClient={selectedClient} 
+                excludedClient={excludedClient} 
+              />
+            </>)
+          : (<Form 
+              client={client} 
+              cliendChanged={saveClient}
+              canceled={() => setVisible("table")}
+            />)
+        }        
+      </Layout>
+    </div>
+  )
+}
+```
+
+- Para melhorar nosso código, vamos criar uma função chamada obter todos/`getAll` e vamos passar para dentro dela o que estamos fazendo no `useEffect` e em seguida, vamos fazer com que o `then` pegue os `clients` e chame uma função callback que irá setar os clientes através do `setClients` recebendo a tabela de `clients` como parâmetro e em seguida vamos setar a visibilidade/`setVisible` para `table` para que a tabela seja exibida.
+Feito isso, vamos pegar essa função `getAll` e vamos chamalá dentro do `useEffect` na inicialização do componente:
+
+``` TSX
+import { useEffect, useState } from "react";
+import CollectionClients from "../backend/db/CollectionClients";
+
+import Button from "../components/Button";
+import Form from "../components/Form";
+import Layout from "../components/Layout";
+import Table from "../components/Table";
+
+import Client from "../core/Client";
+import ClientRepository from "../core/ClientRepository";
+
+export default function Home() {
+
+  const repo: ClientRepository = new CollectionClients();
+
+  const [client, setClient] = useState<Client>(Client.empty());
+  const [clients, setClients] = useState<Client[]>([]);
+  const [visible, setVisible] = useState<"table" | "form">("table");
+
+  useEffect(getAll, []);
+
+  function getAll() {
+    repo.getAll().then(clients => {
+      setClients(clients);
+      setVisible("table");
+    });
+  }
+
+  function selectedClient(client: Client) {
+    setClient(client);
+    setVisible("form");
+  }
+
+  function excludedClient(client: Client) {
+    
+  }
+
+  function newClient() {
+    setClient(Client.empty());
+    setVisible("form");
+  }
+
+  function saveClient(client: Client) {
+    setVisible("table");
+  }
+
+  return (
+    <div className={`
+      flex h-screen justify-center items-center
+      bg-gradient-to-r from-purple-500 to-blue-600
+      text-white
+    `}>
+      <Layout title="Cadastro Simples">
+        {visible === "table"
+          ? (<>
+              <div className="flex justify-end">
+                <Button 
+                  colorInitial="from-green-400" 
+                  colorFinale="to-green-700"
+                  onClick={newClient}
+                >
+                  Novo Cliente
+                </Button>
+              </div>
+              <Table 
+                clients={clients} 
+                selectedClient={selectedClient} 
+                excludedClient={excludedClient} 
+              />
+            </>)
+          : (<Form 
+              client={client} 
+              cliendChanged={saveClient}
+              canceled={() => setVisible("table")}
+            />)
+        }        
+      </Layout>
+    </div>
+  )
+}
+```
+
+- Agora, podemos alterar a função `saveClient` para ser uma função assíncrona `async` e iremos chamar o `repo` com o método `save`(que configuramos dentro de `CollectionClients` e o repo herdou esses métodos ao criar uma instância dessa classe) passando o `client` que queremos salvar(recebido como parâmetro na função `saveClient`).
+Ao terminar de salvar(por isso é uma função assíncrona/`async`, pois vai retornar uma promise e o `await` irá aguardar terminar de processar), iremos chamar a função obter todos/`getAll`:
+
+``` TSX
+import { useEffect, useState } from "react";
+import CollectionClients from "../backend/db/CollectionClients";
+
+import Button from "../components/Button";
+import Form from "../components/Form";
+import Layout from "../components/Layout";
+import Table from "../components/Table";
+
+import Client from "../core/Client";
+import ClientRepository from "../core/ClientRepository";
+
+export default function Home() {
+
+  const repo: ClientRepository = new CollectionClients();
+
+  const [client, setClient] = useState<Client>(Client.empty());
+  const [clients, setClients] = useState<Client[]>([]);
+  const [visible, setVisible] = useState<"table" | "form">("table");
+
+  useEffect(getAll, []);
+
+  function getAll() {
+    repo.getAll().then(clients => {
+      setClients(clients);
+      setVisible("table");
+    });
+  }
+
+  function selectedClient(client: Client) {
+    setClient(client);
+    setVisible("form");
+  }
+
+  function excludedClient(client: Client) {
+    
+  }
+
+  function newClient() {
+    setClient(Client.empty());
+    setVisible("form");
+  }
+
+  async function saveClient(client: Client) {
+    await repo.save(client);
+    getAll();
+  }
+
+  return (
+    <div className={`
+      flex h-screen justify-center items-center
+      bg-gradient-to-r from-purple-500 to-blue-600
+      text-white
+    `}>
+      <Layout title="Cadastro Simples">
+        {visible === "table"
+          ? (<>
+              <div className="flex justify-end">
+                <Button 
+                  colorInitial="from-green-400" 
+                  colorFinale="to-green-700"
+                  onClick={newClient}
+                >
+                  Novo Cliente
+                </Button>
+              </div>
+              <Table 
+                clients={clients} 
+                selectedClient={selectedClient} 
+                excludedClient={excludedClient} 
+              />
+            </>)
+          : (<Form 
+              client={client} 
+              cliendChanged={saveClient}
+              canceled={() => setVisible("table")}
+            />)
+        }        
+      </Layout>
+    </div>
+  )
+}
+```
+
+- Por fim, iremos implementar uma estratégia semelhante para a função de excluir cliente/`excludedClient`:
+
+``` TSX
+import { useEffect, useState } from "react";
+import CollectionClients from "../backend/db/CollectionClients";
+
+import Button from "../components/Button";
+import Form from "../components/Form";
+import Layout from "../components/Layout";
+import Table from "../components/Table";
+
+import Client from "../core/Client";
+import ClientRepository from "../core/ClientRepository";
+
+export default function Home() {
+
+  const repo: ClientRepository = new CollectionClients();
+
+  const [client, setClient] = useState<Client>(Client.empty());
+  const [clients, setClients] = useState<Client[]>([]);
+  const [visible, setVisible] = useState<"table" | "form">("table");
+
+  useEffect(getAll, []);
+
+  function getAll() {
+    repo.getAll().then(clients => {
+      setClients(clients);
+      setVisible("table");
+    });
+  }
+
+  function selectedClient(client: Client) {
+    setClient(client);
+    setVisible("form");
+  }
+
+  async function excludedClient(client: Client) {
+    await repo.delete(client);
+    getAll();
+  }
+
+  function newClient() {
+    setClient(Client.empty());
+    setVisible("form");
+  }
+
+  async function saveClient(client: Client) {
+    await repo.save(client);
+    getAll();
+  }
+
+  return (
+    <div className={`
+      flex h-screen justify-center items-center
+      bg-gradient-to-r from-purple-500 to-blue-600
+      text-white
+    `}>
+      <Layout title="Cadastro Simples">
+        {visible === "table"
+          ? (<>
+              <div className="flex justify-end">
+                <Button 
+                  colorInitial="from-green-400" 
+                  colorFinale="to-green-700"
+                  onClick={newClient}
+                >
+                  Novo Cliente
+                </Button>
+              </div>
+              <Table 
+                clients={clients} 
+                selectedClient={selectedClient} 
+                excludedClient={excludedClient} 
+              />
+            </>)
+          : (<Form 
+              client={client} 
+              cliendChanged={saveClient}
+              canceled={() => setVisible("table")}
+            />)
+        }        
+      </Layout>
+    </div>
+  )
 }
 ```

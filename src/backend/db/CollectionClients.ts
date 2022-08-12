@@ -25,7 +25,7 @@ export default class CollectionClients implements ClientRepository {
       await this.#collection().doc(client.id).set(client); // então para alterar, dentro da coleção de clientes, conseguimos acessar um cliente específico que é um documento/doc a partir do id dele(client.id) e em seguida, após acessar o cliente em questão podemos chamar o método set para setar as alterações
       return client; // se der tudo certo, vamos retornar o client com as alterações
     } else { // caso contrário, se o id não estiver setado significa que vamos salvar
-      const docRef = this.#collection().add(client) // o método add retorna uma Promise de um DocumentReference, e como queremos pegá-lo vamos colocar um await e armazenar na constante docRef 
+      const docRef = await this.#collection().add(client) // o método add retorna uma Promise de um DocumentReference, e como queremos pegá-lo vamos colocar um await e armazenar na constante docRef 
       const doc = await docRef.get(); // o método get retorna uma Promise de um DocumentSnapshop, e como queremos pegá-lo vamos colocar um await e armazenar na constante doc
       return doc.data(); // e apartir do doc utilizando o método data conseguimos pegar o cliente 
     }
